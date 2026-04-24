@@ -1,0 +1,9 @@
+{
+  "title": "Manchester",
+  "slug": "manchester",
+  "parent": "England",
+  "country": "United Kingdom",
+  "population": 552000,
+  "neighborhoods": ["Northern Quarter", "Deansgate", "Ancoats", "Didsbury", "Chorlton"],
+  "landmarks": ["Old Trafford", "Manchester Arena", "Canal Street", "Media City"]
+}

@@ -1,0 +1,32 @@
+---
+/**
+ * BaseLayout — the html shell. Every page on the site extends this.
+ * Imports global CSS once, mounts header + footer, yields <slot /> for the page body.
+ */
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SiteHead from '../components/SiteHead.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const { title, description, canonical, noindex } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <SiteHead {title} {description} {canonical} {noindex} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

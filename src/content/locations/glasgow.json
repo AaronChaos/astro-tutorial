@@ -1,0 +1,9 @@
+{
+  "title": "Glasgow",
+  "slug": "glasgow",
+  "parent": "Scotland",
+  "country": "United Kingdom",
+  "population": 635130,
+  "neighborhoods": ["West End", "Southside", "Merchant City", "Finnieston", "Dennistoun"],
+  "landmarks": ["SSE Hydro", "Kelvingrove Park", "Buchanan Street", "Ashton Lane"]
+}

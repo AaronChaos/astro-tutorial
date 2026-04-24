@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const niches = (await getCollection('niches')).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+---
+<BaseLayout
+  title="Interests & Niches"
+  description="Every kink, fetish, and flavour has a home on Kindred. Browse our niche-first dating communities — from BDSM and bondage to fetish and pegging."
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">All interests</p>
+      <h1>What are you into?</h1>
+      <p class="muted" style="max-width: 640px;">
+        Kindred is built around niche-first matching. Pick your interest below to meet
+        verified members who share it &mdash; in your city and across the UK.
+      </p>
+
+      <div class="grid grid--3" style="margin-top: 32px;">
+        {niches.map(niche => (
+          <a href={`/niches/${niche.data.slug}/`} class="card">
+            <span class="pill">{niche.data.title}</span>
+            <h3 style="margin-top: 14px;">{niche.data.tagline ?? niche.data.title}</h3>
+            <p class="muted" style="margin: 0;">{niche.data.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

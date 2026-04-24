@@ -1,74 +1,37 @@
 ---
-import Navigation from '../components/Navigation.astro';
-import Footer from '../components/Footer.astro';
-import '../styles/global.css';
-
-const pageTitle = "About Me";
-
-const identity = {
-  firstName: "Aaron",
-  country: "United Kingdom",
-  occupation: "Vibe Coderr",
-  hobbies: ["beer", "birdwatching", "leeds united"],
-};
-
-const skills = ["HTML", "CSS", "JavaScript", "React", "Astro", "Writing Docs"];
-
-const happy = true;
-const finished = false;
-const goal = 3;
-
-const skillColor = "blue";
-const textCase = "uppercase";
-
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
+<BaseLayout
+  title="About Kindred"
+  description="Kindred is a UK adult dating site built on niche-first matching, consent, and real conversation. Learn who we are and why we built it."
+>
+  <section class="section">
+    <div class="container" style="max-width: 720px;">
+      <p class="eyebrow">About</p>
+      <h1>A dating site for people who know what they want.</h1>
+      <p>
+        Most dating apps flatten everyone into the same template. Kindred doesn't.
+        We built a community where your actual interests &mdash; the specific
+        stuff you care about &mdash; are the first filter, not an afterthought.
+      </p>
+      <p>
+        We're a small UK team. Our rules are simple: consent first, verified
+        profiles only, zero tolerance for shaming, and no ads selling your data.
+        We're paid by members who want the full feature set &mdash; that's it.
+      </p>
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{pageTitle}</title>
-        <style define:vars={{skillColor, textCase}}>
-            h1 {
-                color: red;
-                background: whitesmoke;
-                padding: 20px;
-                border-radius: 4px;
-            }
-            .about-me__skill {
-                color: var(--skillColor);
-                font-weight: bold;
-                text-transform: var(--textCase);
-            }
+      <h2 style="margin-top: 48px;">What we believe</h2>
+      <ul class="clean benefits" style="margin-top: 20px;">
+        <li><strong>Consent is non-negotiable</strong>Every feature is designed around giving members control over who sees what, and when.</li>
+        <li><strong>Niche-first matching works</strong>You match better when you're honest about what you're into. We make that easy and safe.</li>
+        <li><strong>Local communities matter</strong>Long-distance matches are fun, but real life happens in your city.</li>
+      </ul>
 
-        </style>
-	</head>
-	<body>
-    <Navigation />
-		<h1>{pageTitle}</h1>
-        <p>I am a top-level vibe coder now working in Astro and PhantomWP to make some rapid dating websites.</p>
-	<p>Here are a few facts about me:</p>
-<ul>
-  <li>My name is {identity.firstName}.</li>
-  <li>I live in {identity.country} and I work as a {identity.occupation}.</li>
-  {identity.hobbies.length >= 2 &&
-    <li>Two of my hobbies are: {identity.hobbies[0]} and {identity.hobbies[1]}</li>
-  }
-</ul>
-<p>My skills are:</p>
-<ul>
-  {skills.map((skill) => <li class="about-me__skill">{skill}</li>)}
-</ul>
-
-{happy && <p>I am happy to be learning Astro!</p>}
-
-{finished && <p>I finished this tutorial!</p>}
-
-{goal === 3 ? <p>My goal is to finish in 3 days.</p> : <p>My goal is not 3 days.</p>}
-		<Footer />
-
-    </body>
-</html>
+      <h2 style="margin-top: 48px;">18+ only</h2>
+      <p>
+        Kindred is strictly for adults. Every profile is verified. If you're
+        under 18, this site isn't for you.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

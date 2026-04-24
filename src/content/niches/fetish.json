@@ -1,0 +1,79 @@
+{
+  "title": "Fetish",
+  "slug": "fetish",
+  "plural": "fetish singles",
+  "tagline": "Whatever your thing, someone else is into it too",
+  "description": "A home for every kink, fetish, and curious mind \u2014 safely, anonymously, on your terms.",
+  "pools": {
+    "hero_headline": [
+      "Fetish Dating in {location} Without the Awkwardness",
+      "Find Your {location} Fetish Match Tonight",
+      "Meet Fetish Singles Across {location}",
+      "{location}'s Most Open Fetish Community",
+      "Your Fetish Match Is Waiting in {location}"
+    ],
+    "intro_para": [
+      "{location} is home to a diverse fetish community where every taste has a place. Kindred's detailed profiles let you find someone who shares exactly what you're into \u2014 without the guessing games or the small talk.",
+      "From the mainstream to the deeply specific, the fetish scene in {location} is welcoming, active and verified. Match on what you're actually into, message discreetly, meet when you're both ready.",
+      "Whatever your fetish, there's a community for it in {location}. Join thousands of local verified singles who value authenticity over pretence \u2014 and who absolutely do not kinkshame."
+    ],
+    "cta_headline": [
+      "Find your {location} match tonight",
+      "Join {location}'s fetish community",
+      "Stop hiding. Start connecting."
+    ],
+    "benefit_1": [
+      "Over 200 interest categories",
+      "Private galleries, member-controlled",
+      "Match by fetish, not just looks"
+    ],
+    "benefit_2": [
+      "Active {location} forums and local meetups",
+      "Zero tolerance for shaming, enforced",
+      "Scene-aware community moderation"
+    ],
+    "benefit_3": [
+      "Free basic membership",
+      "Verified-member badges",
+      "UK's largest verified fetish community"
+    ],
+    "safety_para": [
+      "Every {location} profile is photo-verified before messaging is unlocked. Reports are reviewed by moderators who actually understand the scene. Kinkshaming is a bannable offence \u2014 not a guideline.",
+      "Safety on Kindred means photo verification, a 24-hour report turnaround, and moderators who don't flinch. In {location}, that keeps the community welcoming for everyone from beginners to long-time scene regulars.",
+      "The whole point of Kindred is that you can be honest about what you're into. That only works if the community is safe. In {location}, we invest heavily in moderation, verification, and consequences for bad actors."
+    ],
+    "how_it_works_para": [
+      "Pick from over 200 interest tags, set your hard limits, tell us how experienced you are, and we'll match you with {location} members whose profiles actually line up. Messaging is private by default.",
+      "Create your profile, set your filters, and the algorithm surfaces {location} members who share your specific interests \u2014 not just your postcode. The more specific you are, the better the matches.",
+      "Your profile says what you're into. Our filters find {location} members on the same page. You take it from there \u2014 on your timeline, on your terms."
+    ],
+    "community_para": [
+      "{location}'s fetish community on Kindred is genuinely active. Local forums, neighbourhood-specific meetups, and members who've been part of the scene for years alongside newcomers taking their first steps.",
+      "The Kindred {location} community includes people from every walk of life \u2014 the thing they have in common is that they're honest about what they want. That's rarer than you'd think.",
+      "This isn't a profile-count-inflated mega-site. {location}'s Kindred fetish community is human-scale: real members, real conversations, real meetups."
+    ],
+    "neighborhood_blurb": [
+      "This part of {location} has one of the most active fetish-community chat threads in the city.",
+      "Members in this corner of {location} tend to be long-term regulars of local fetish nights.",
+      "A pocket of {location} with a mix of experienced members and first-timers testing the water."
+    ],
+    "closing_para": [
+      "Whatever you're into, {location} has a community of people who share it. Kindred is where you find them \u2014 without having to pretend, guess or flinch.",
+      "The only thing standing between you and {location}'s fetish community is a verified profile. Creating one takes two minutes.",
+      "Stop scrolling apps that don't get you. {location}'s fetish community on Kindred actually does."
+    ]
+  },
+  "faqs": [
+    { "q": "What if my fetish is really specific?", "a": "Kindred has over 200 interest tags and you can write in any more. {location} members search by tag every day, so specific doesn't mean invisible." },
+    { "q": "I'm new and a bit nervous. Is that OK?", "a": "Very. A big share of {location}'s fetish community identifies as curious or new. Look for the beginner-friendly badge." },
+    { "q": "Are profiles verified?", "a": "Yes. Every {location} member completes photo verification before sending messages. Fake profiles get removed within 24 hours of being reported." },
+    { "q": "What's your kinkshaming policy?", "a": "Zero tolerance. Shaming another member in chat or comments gets a warning on first offence and a permanent ban on the second. We mean it." },
+    { "q": "Can I keep my identity private?", "a": "Yes. Your legal name is never shown. You control which photos are public and which are request-only." },
+    { "q": "How much does Kindred cost?", "a": "Free to join and message verified members. Premium adds unlimited filters, galleries, and read receipts." }
+  ],
+  "testimonials": [
+    { "name": "Morgan, 31", "quote": "First site where my interests weren't the weird ones. Found someone in {location} who shares exactly what I'm into." },
+    { "name": "Casey, 42", "quote": "The moderation is real. Reported someone being a dick and they were gone by morning." },
+    { "name": "Jamie, 27", "quote": "{location}'s community is diverse and actually active. Messages get replies." }
+  ]
+}

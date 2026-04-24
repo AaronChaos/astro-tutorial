@@ -1,0 +1,9 @@
+{
+  "title": "Edinburgh",
+  "slug": "edinburgh",
+  "parent": "Scotland",
+  "country": "United Kingdom",
+  "population": 526470,
+  "neighborhoods": ["Old Town", "New Town", "Leith", "Stockbridge", "Bruntsfield"],
+  "landmarks": ["Edinburgh Castle", "Royal Mile", "Arthur's Seat", "Princes Street"]
+}

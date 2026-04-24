@@ -1,0 +1,79 @@
+{
+  "title": "BDSM",
+  "slug": "bdsm",
+  "plural": "BDSM singles",
+  "tagline": "Consent, trust, and the rush of letting go",
+  "description": "A safe, verified community for doms, subs, and everyone exploring in between.",
+  "pools": {
+    "hero_headline": [
+      "BDSM Dating in {location} \u2014 Verified, Respectful, Real",
+      "Find Your {location} BDSM Match Tonight",
+      "Meet Doms and Subs Across {location}",
+      "{location}'s Trusted BDSM Community",
+      "Your {location} BDSM Match Is Waiting"
+    ],
+    "intro_para": [
+      "Kindred's BDSM community in {location} is built for people who take consent, negotiation and aftercare seriously. From first-time subs to experienced switches, you'll find partners who know the difference between a kink and a red flag.",
+      "Whether you're into rope, impact, power exchange or just curious what a proper scene actually looks like, the {location} BDSM scene on Kindred brings together people who do this properly. Verified profiles, detailed interest filters, and a moderated space.",
+      "The {location} BDSM scene isn't what the films make it look like \u2014 it's a community of careful, communicative adults who prize trust above anything else. Kindred is where you meet them."
+    ],
+    "cta_headline": [
+      "Start connecting in {location} tonight",
+      "Join {location}'s BDSM community",
+      "Your next scene is one message away"
+    ],
+    "benefit_1": [
+      "Detailed kink & role filters",
+      "Verified profiles only",
+      "Dom, sub, switch and vanilla-curious"
+    ],
+    "benefit_2": [
+      "Active {location} munches & play parties",
+      "Scene-aware community moderation",
+      "Workshops on consent and aftercare"
+    ],
+    "benefit_3": [
+      "Free basic membership",
+      "10,000+ active UK members",
+      "Strict no-drama, no-shaming policy"
+    ],
+    "safety_para": [
+      "Every profile on Kindred is verified before it can message another member. Our {location} moderators are drawn from the community and understand how BDSM actually works \u2014 so safety reports get taken seriously, and enthusiastic consent is the floor, not the ceiling.",
+      "Safety in BDSM means more than a safeword. In {location} we back that up with verified photos, reputation badges earned over time, and a team that reviews every report within 24 hours. Ghosting a negotiation? That's a report-worthy offence here.",
+      "We take safety seriously because our members do. In {location}, every new member completes a consent-and-negotiation primer before messaging. Reporting is one tap. Block is permanent. And every {location} moderator has lived experience in the scene."
+    ],
+    "how_it_works_para": [
+      "Sign up in under two minutes. Tell us what you're into \u2014 roles, hard limits, soft limits, experience level \u2014 and we'll surface {location} members whose profiles line up. Every match shows shared interests up front so the awkward \"so what are you into\" conversation is already answered.",
+      "Create your profile, set your filters as narrow or broad as you like, and we'll do the rest. {location}'s active members get surfaced first, but you can match UK-wide if distance isn't an issue. Private galleries mean you decide who sees what.",
+      "Tell us about the kind of scene you're looking for and Kindred matches you with {location} members whose interests and experience actually align. No guessing games, no vanilla-only matches wasting your time."
+    ],
+    "community_para": [
+      "{location}'s BDSM scene has been quietly thriving for decades \u2014 you just don't hear about it because the people in it are discreet. Kindred is where that community lives online: regulars from {location}'s longest-running munches, newcomers from last month's beginner workshop, and everyone in between.",
+      "From regulars at {location}'s monthly munches to people brand new to the scene, Kindred is the online home of the {location} BDSM community. You'll find event organisers, educators, and members who'll point you toward the right next step.",
+      "The {location} BDSM community on Kindred is real people, not profile-farm bots. Members recognise each other from workshops, play parties, and the pub after. It's a small world \u2014 and that's a feature, not a bug."
+    ],
+    "neighborhood_blurb": [
+      "Members in this part of {location} tend to cluster around the monthly munch at a local pub \u2014 check the events board once you're in.",
+      "This area of {location} has one of the most active beginner-friendly scenes, with regular introductory meetups.",
+      "Kindred members in this pocket of {location} range from newcomers to long-time scene regulars running workshops of their own."
+    ],
+    "closing_para": [
+      "Whether you're here for a casual scene partner, a long-term D/s dynamic, or just to meet like-minded people in {location} without having to explain yourself \u2014 you'll find your people on Kindred.",
+      "Kindred isn't the biggest dating site in {location}, but it's the one people in the BDSM scene actually recommend to each other. Come see why.",
+      "The {location} BDSM community is welcoming, educated, and happy to meet new people. The only thing stopping you meeting them is creating a profile."
+    ]
+  },
+  "faqs": [
+    { "q": "I'm brand new to BDSM. Is Kindred still for me?", "a": "Absolutely. A big chunk of {location}'s Kindred community identifies as curious or beginner. Filter for members who've marked themselves as happy to mentor, and look for the 'beginner-friendly' badge." },
+    { "q": "Are profiles really verified?", "a": "Yes. Every member uploads a photo-verification selfie before they can send messages. Fake profiles are removed within 24 hours of being reported." },
+    { "q": "Is my information private?", "a": "Your real name is never shown. Photos default to private and you control who sees them on a per-person basis." },
+    { "q": "Does Kindred run events in {location}?", "a": "We don't host events directly, but our {location} community board lists munches, workshops and parties run by verified local organisers." },
+    { "q": "What if someone behaves badly?", "a": "Report them. Every report in {location} is reviewed within 24 hours by a moderator who understands the scene. Repeat offenders are removed permanently." },
+    { "q": "How much does Kindred cost?", "a": "Basic membership is free, including messaging verified members. Premium unlocks advanced filters, unlimited galleries and read receipts." }
+  ],
+  "testimonials": [
+    { "name": "Sam, 34", "quote": "First site where I didn't have to explain what a switch is. Met my current partner in {location} within a fortnight." },
+    { "name": "Alex, 29", "quote": "The verification thing actually works. Every person I've met in {location} has matched their profile." },
+    { "name": "Jordan, 41", "quote": "Been in the scene twenty years. Kindred's {location} community feels like the people I know from the monthly munch." }
+  ]
+}

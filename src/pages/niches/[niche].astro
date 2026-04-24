@@ -1,0 +1,107 @@
+---
+/**
+ * Niche hub page — one per niche. Cross-links to every city.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { pick, resolveTokens } from '../../lib/pools';
+import { heroImage, cardImage, avatarImage } from '../../lib/images';
+import { SIGNUP_URL, SIGNUP_REL, SIGNUP_TARGET } from '../../lib/config';
+
+export async function getStaticPaths() {
+  const niches = await getCollection('niches');
+  return niches.map(niche => ({
+    params: { niche: niche.data.slug },
+    props: { niche: niche.data },
+  }));
+}
+
+const { niche } = Astro.props;
+const locations = (await getCollection('locations')).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+
+const seed = `hub:${niche.slug}`;
+const ctx = { niche: niche.title, location: 'the UK', plural: niche.plural ?? niche.title };
+const heroHeadline = pick(niche.pools, 'hero_headline', seed, ctx);
+const introPara = pick(niche.pools, 'intro_para', seed, ctx);
+const safetyPara = pick(niche.pools, 'safety_para', seed, ctx);
+const communityPara = pick(niche.pools, 'community_para', seed, ctx);
+
+const testimonials = niche.testimonials.map((t, i) => ({
+  ...t,
+  quote: resolveTokens(t.quote, ctx),
+  avatar: avatarImage(`${seed}:t${i}`),
+}));
+---
+<BaseLayout
+  title={`${niche.title} Dating in the UK`}
+  description={niche.description ?? `Meet ${niche.plural ?? niche.title.toLowerCase()} across the UK on Kindred.`}
+>
+  <section class="hero hero--image" style={`background-image: linear-gradient(180deg, rgba(11,11,15,0.35), rgba(11,11,15,0.9)), url('${heroImage(`niche:${niche.slug}`)}');`}>
+    <div class="container">
+      <p class="hero__tagline">{niche.tagline ?? niche.title}</p>
+      <h1>{heroHeadline}</h1>
+      <p class="hero__lead">{introPara}</p>
+      <div class="hero__actions">
+        <a href={SIGNUP_URL} target={SIGNUP_TARGET} rel={SIGNUP_REL} class="btn btn--primary">Join free</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Find {niche.title.toLowerCase()} singles near you</p>
+      <h2>Pick your city</h2>
+      <p class="muted" style="max-width: 640px;">{communityPara}</p>
+      <div class="grid grid--3" style="margin-top: 28px;">
+        {locations.map(loc => (
+          <a href={`/${loc.data.slug}/${niche.slug}/`} class="n-card">
+            <div class="n-card__img" style={`background-image: url('${cardImage(`niche:${niche.slug}:${loc.data.slug}`)}');`}></div>
+            <div class="n-card__body">
+              <h3>{niche.title} in {loc.data.title}</h3>
+              <p class="muted" style="margin: 0; font-size: 0.92rem;">
+                Meet {niche.plural ?? niche.title.toLowerCase()} across {loc.data.title} &rarr;
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {testimonials.length > 0 && (
+    <section class="section section--alt">
+      <div class="container">
+        <p class="eyebrow">Member stories</p>
+        <h2>What our {niche.title.toLowerCase()} members say</h2>
+        <div class="grid grid--3" style="margin-top: 28px;">
+          {testimonials.map(t => (
+            <figure class="testimonial">
+              <img src={t.avatar} alt="" class="testimonial__avatar" loading="lazy" width="56" height="56" />
+              <blockquote class="testimonial__quote">&ldquo;{t.quote}&rdquo;</blockquote>
+              <figcaption class="testimonial__name">&mdash; {t.name}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <div class="container" style="max-width: 760px;">
+      <p class="eyebrow">Trust &amp; safety</p>
+      <h2>Safety comes first</h2>
+      <p class="muted">{safetyPara}</p>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container" style="text-align: center; max-width: 620px;">
+      <h2>Ready to meet {niche.plural ?? niche.title.toLowerCase()}?</h2>
+      <p class="muted">Free to join. Verified members. UK-wide.</p>
+      <a href={SIGNUP_URL} target={SIGNUP_TARGET} rel={SIGNUP_REL} class="btn btn--primary" style="margin-top: 8px;">Create my profile</a>
+      <p class="muted" style="margin-top: 14px; font-size: 0.8rem;">18+ only.</p>
+    </div>
+  </section>
+</BaseLayout>

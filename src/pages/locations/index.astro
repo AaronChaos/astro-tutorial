@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const locations = (await getCollection('locations')).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+---
+<BaseLayout
+  title="Dating Locations Across the UK"
+  description="Find your match in your city. Browse Kindred's active dating communities across the UK — from London to Glasgow and everywhere between."
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">All locations</p>
+      <h1>Where would you like to meet?</h1>
+      <p class="muted" style="max-width: 640px;">
+        Kindred runs active dating communities across the UK. Pick your city to see
+        the niches and interests with the most members near you.
+      </p>
+
+      <div class="grid grid--3" style="margin-top: 32px;">
+        {locations.map(loc => (
+          <a href={`/${loc.data.slug}/`} class="card">
+            <h3>{loc.data.title}</h3>
+            <p class="muted" style="margin: 0 0 8px; font-size: 0.9rem;">
+              {loc.data.country}
+              {loc.data.population && ` · ${(loc.data.population / 1000).toFixed(0)}k+ people`}
+            </p>
+            <p class="muted" style="margin: 0; font-size: 0.9rem;">
+              {loc.data.neighborhoods.slice(0, 4).join(', ')}
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

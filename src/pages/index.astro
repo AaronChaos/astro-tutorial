@@ -1,22 +1,105 @@
 ---
-import Navigation from '../components/Navigation.astro';
-import Footer from '../components/Footer.astro';
-import '../styles/global.css';
-const pageTitle = "My Astro Test Site";
----
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { heroImage, cardImage } from '../lib/images';
+import { SIGNUP_URL, SIGNUP_REL, SIGNUP_TARGET } from '../lib/config';
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		    <Navigation />
-		<h1>{pageTitle}</h1>
-		<Footer />
-	</body>
-</html>
+const locations = (await getCollection('locations')).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+const niches = (await getCollection('niches')).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+---
+<BaseLayout
+  title="Kindred — Adult Dating for Every Kind of Connection"
+  description="Find your match across the UK. A dating community for every interest, every city, every kind of connection — built on trust, consent, and real conversation."
+>
+  <section class="hero hero--image" style={`background-image: linear-gradient(180deg, rgba(11,11,15,0.35), rgba(11,11,15,0.9)), url('${heroImage('home:hero')}');`}>
+    <div class="container">
+      <p class="hero__tagline">Adult dating, unapologetic</p>
+      <h1>Find someone who actually gets you.</h1>
+      <p class="hero__lead">
+        Kindred is where UK adults meet on their own terms. Niche-first matching,
+        verified profiles, active local communities &mdash; no noise, no nonsense.
+      </p>
+      <div class="hero__actions">
+        <a href={SIGNUP_URL} target={SIGNUP_TARGET} rel={SIGNUP_REL} class="btn btn--primary">Join free</a>
+        <a href="/niches/" class="btn btn--ghost">Browse interests</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Explore by interest</p>
+      <h2>Every kink, fetish and flavour</h2>
+      <p class="muted" style="max-width: 640px;">
+        From vanilla-curious to deep in the scene &mdash; our communities
+        are built around what you're actually into, not what you're expected to want.
+      </p>
+
+      <div class="grid grid--3" style="margin-top: 32px;">
+        {niches.map(niche => (
+          <a href={`/niches/${niche.data.slug}/`} class="n-card">
+            <div class="n-card__img" style={`background-image: url('${cardImage(`home:niche:${niche.data.slug}`)}');`}></div>
+            <div class="n-card__body">
+              <span class="pill">{niche.data.title}</span>
+              <h3 style="margin-top: 14px;">{niche.data.tagline ?? niche.data.title}</h3>
+              <p class="muted" style="margin: 0;">{niche.data.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <p class="eyebrow">Explore by city</p>
+      <h2>Active communities across the UK</h2>
+      <p class="muted" style="max-width: 640px;">
+        From London's sprawling scene to tight-knit communities in Glasgow, Edinburgh
+        and Manchester &mdash; Kindred runs active local communities in every major UK city.
+      </p>
+      <div class="grid grid--4" style="margin-top: 28px;">
+        {locations.map(loc => (
+          <a href={`/${loc.data.slug}/`} class="n-card">
+            <div class="n-card__img" style={`background-image: url('${cardImage(`home:loc:${loc.data.slug}`)}');`}></div>
+            <div class="n-card__body">
+              <strong style="color: var(--c-text);">{loc.data.title}</strong>
+              <p class="muted" style="margin: 6px 0 0; font-size: 0.9rem;">
+                {loc.data.neighborhoods.slice(0, 3).join(', ')}
+                {loc.data.neighborhoods.length > 3 && ' & more'}
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Why Kindred</p>
+      <h2>Built different, on purpose</h2>
+      <ul class="clean benefits" style="margin-top: 24px;">
+        <li><strong>Niche-first matching</strong>Tell us what you're actually into. We match you with people who share it, not just people in your postcode.</li>
+        <li><strong>Verified members only</strong>Every profile photo is verified before messaging is unlocked. Fake profiles get removed fast.</li>
+        <li><strong>Zero-shaming policy</strong>Kinkshaming gets you banned, not warned. The community moderators actually enforce it.</li>
+        <li><strong>Privacy by default</strong>Legal names are never shown. Your gallery is yours to share &mdash; or not.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container" style="text-align: center; max-width: 620px;">
+      <h2>Ready to meet your people?</h2>
+      <p class="muted">
+        Free to join. Verified members. UK-wide community. Takes two minutes.
+      </p>
+      <a href={SIGNUP_URL} target={SIGNUP_TARGET} rel={SIGNUP_REL} class="btn btn--primary" style="margin-top: 8px;">Create my profile</a>
+      <p class="muted" style="margin-top: 14px; font-size: 0.8rem;">18+ only.</p>
+    </div>
+  </section>
+</BaseLayout>

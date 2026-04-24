@@ -1,0 +1,79 @@
+{
+  "title": "Pegging",
+  "slug": "pegging",
+  "plural": "pegging singles",
+  "tagline": "Flip the script, and mean it",
+  "description": "A welcoming space for couples and singles interested in pegging \u2014 curious, experienced, or somewhere in between.",
+  "pools": {
+    "hero_headline": [
+      "Pegging Dating in {location} \u2014 Honest, Open, Judgement-Free",
+      "Find Your {location} Pegging Match",
+      "Meet Pegging Singles Across {location}",
+      "{location}'s Most Open Pegging Community",
+      "Your {location} Pegging Partner Is Here"
+    ],
+    "intro_para": [
+      "Pegging in {location} is more common than you'd think \u2014 people just don't talk about it. Kindred is where they do. Curious beginners and experienced partners meet on equal footing, and nobody has to pretend.",
+      "Whether you're a woman looking to explore, a man who's always been curious, or a couple wanting to open up to a new dynamic, Kindred's {location} pegging community is here without the judgement or the awkward small talk.",
+      "The {location} pegging scene on Kindred is friendly, communicative, and absolutely unashamed. Match on interests that actually matter, message when you're ready, meet when you're both comfortable."
+    ],
+    "cta_headline": [
+      "Find your {location} match tonight",
+      "Join {location}'s pegging community",
+      "Stop wondering. Start asking."
+    ],
+    "benefit_1": [
+      "Match by role, experience and dynamic",
+      "Verified profiles only",
+      "Solo, couple and curious options"
+    ],
+    "benefit_2": [
+      "Active {location} members who actually reply",
+      "Zero-shaming policy, enforced",
+      "Educational content and community tips"
+    ],
+    "benefit_3": [
+      "Free basic membership",
+      "10,000+ active UK members",
+      "Discreet, private-by-default messaging"
+    ],
+    "safety_para": [
+      "Every profile in {location} is photo-verified before anyone can message. Reports are reviewed by moderators who've been in the community \u2014 not call-centre staff reading from a script. Consent is the baseline, every time.",
+      "Kindred's {location} community runs on trust. Verified photos, reputation badges earned over time, and a report system that actually does something. Shaming, pressuring or ghosting a negotiation are all report-worthy.",
+      "Safety matters more in this niche than most because the conversation itself takes courage. In {location} we protect that by verifying every member, reviewing every report, and keeping the tone respectful."
+    ],
+    "how_it_works_para": [
+      "Create a profile, tell us what role you're interested in and how experienced you are, and we'll surface {location} members with matching interests. Private galleries mean you decide who sees what \u2014 and when.",
+      "Sign up in two minutes, set your preferences, and we'll match you with {location} members whose profiles actually line up with yours. No algorithmic guessing at what you might like.",
+      "Your profile says what you're into. Our filters find {location} members who are on the same page. You take it from there \u2014 no awkward 'so... have you ever...' moments required."
+    ],
+    "community_para": [
+      "The pegging community in {location} is bigger and friendlier than its reputation suggests. Kindred is where local members gather online \u2014 regulars from the monthly kink socials, couples who met on the site, and curious newcomers taking their first step.",
+      "{location}'s Kindred pegging community includes solo men, solo women, couples and everyone in between. Members share tips, answer beginner questions, and occasionally organise meetups in their corner of the city.",
+      "This is a community, not a profile farm. {location} members know each other, help each other out, and vouch for each other. That matters when the topic is this personal."
+    ],
+    "neighborhood_blurb": [
+      "A pocket of {location} with a surprisingly active community of curious couples and confident solo members.",
+      "Members in this part of {location} skew slightly more experienced and are often happy to answer beginner questions.",
+      "This area of {location} has a healthy mix of long-term couples exploring together and solo members looking to connect."
+    ],
+    "closing_para": [
+      "Whether you're curious, experienced, or somewhere in between, Kindred's {location} pegging community is a safe place to explore at your own pace.",
+      "The hardest part is usually admitting what you want. Once you're past that, {location}'s pegging community is open, friendly and ready to meet you.",
+      "You're not alone in being curious. Thousands of people in {location} feel the same way \u2014 this is where you find them."
+    ]
+  },
+  "faqs": [
+    { "q": "I've never done this before. Is Kindred still for me?", "a": "Yes \u2014 a majority of {location}'s pegging community identifies as curious or beginner. Look for members with the 'happy to chat with beginners' badge." },
+    { "q": "Are couples welcome?", "a": "Couples are a big part of the {location} community. Create a couple's profile to match with other couples or solos, as you prefer." },
+    { "q": "How private is my profile?", "a": "Your legal name is never shown. Main photos are public by default but you can make them request-only, and extra galleries are always private." },
+    { "q": "What if someone pressures me?", "a": "Report and block. Every report in {location} is reviewed within 24 hours by a moderator. We take pressuring extremely seriously." },
+    { "q": "Is there educational content?", "a": "Yes \u2014 a community-contributed guide covers everything from first-time basics to more advanced tips. Free to read for all members." },
+    { "q": "How much does Kindred cost?", "a": "Basic membership is free and includes verified messaging. Premium unlocks advanced filters and unlimited private galleries." }
+  ],
+  "testimonials": [
+    { "name": "Robin, 38", "quote": "Finally a site where asking is easy. Met someone in {location} who was as curious as I was." },
+    { "name": "Taylor & partner, 34/32", "quote": "We joined as a couple. {location}'s community is refreshingly normal about this stuff." },
+    { "name": "Dana, 45", "quote": "Took me years to admit what I wanted. Took me ten days on Kindred to find someone in {location} who wanted the same." }
+  ]
+}

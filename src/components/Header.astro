@@ -1,0 +1,14 @@
+---
+import { SIGNUP_URL, SIGNUP_REL, SIGNUP_TARGET } from '../lib/config';
+---
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="/" class="site-header__logo">Kindred<span>.</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="/locations/">Locations</a>
+      <a href="/niches/">Interests</a>
+      <a href="/about/">About</a>
+      <a href={SIGNUP_URL} target={SIGNUP_TARGET} rel={SIGNUP_REL} class="btn btn--primary">Join free</a>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,9 @@
+{
+  "title": "London",
+  "slug": "london",
+  "parent": "England",
+  "country": "United Kingdom",
+  "population": 8982000,
+  "neighborhoods": ["Shoreditch", "Camden", "Soho", "Hackney", "Brixton"],
+  "landmarks": ["Tower Bridge", "Hyde Park", "The Shard", "Covent Garden"]
+}

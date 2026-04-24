@@ -1,0 +1,266 @@
+---
+/**
+ * Dynamic landing pages — the heart of programmatic SEO.
+ *
+ * One page per (location × niche) combination. Every piece of variable
+ * copy is picked deterministically from a pool so rebuilds are idempotent.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { pick, resolveTokens } from '../../lib/pools';
+import { heroImage, cardImage, avatarImage } from '../../lib/images';
+import { SIGNUP_URL, SIGNUP_REL, SIGNUP_TARGET } from '../../lib/config';
+
+export async function getStaticPaths() {
+  const locations = await getCollection('locations');
+  const niches = await getCollection('niches');
+
+  return locations.flatMap(location =>
+    niches.map(niche => ({
+      params: { location: location.data.slug, niche: niche.data.slug },
+      props: { location: location.data, niche: niche.data },
+    })),
+  );
+}
+
+const { location, niche } = Astro.props;
+const seed = `${location.slug}:${niche.slug}`;
+
+const ctx = {
+  niche: niche.title,
+  location: location.title,
+  plural: niche.plural ?? niche.title,
+};
+
+// All the pool-picked copy for this page.
+const heroHeadline = pick(niche.pools, 'hero_headline', seed, ctx);
+const introPara    = pick(niche.pools, 'intro_para', seed, ctx);
+const ctaHeadline  = pick(niche.pools, 'cta_headline', seed, ctx);
+const benefit1     = pick(niche.pools, 'benefit_1', seed, ctx);
+const benefit2     = pick(niche.pools, 'benefit_2', seed, ctx);
+const benefit3     = pick(niche.pools, 'benefit_3', seed, ctx);
+const safetyPara   = pick(niche.pools, 'safety_para', seed, ctx);
+const howItWorks   = pick(niche.pools, 'how_it_works_para', seed, ctx);
+const communityPara = pick(niche.pools, 'community_para', seed, ctx);
+const closingPara  = pick(niche.pools, 'closing_para', seed, ctx);
+
+// Testimonials & FAQs: resolve {tokens} inside each, then render statically.
+const testimonials = niche.testimonials.map((t, i) => ({
+  ...t,
+  quote: resolveTokens(t.quote, ctx),
+  avatar: avatarImage(`${seed}:t${i}`),
+}));
+const faqs = niche.faqs.map(f => ({
+  q: resolveTokens(f.q, ctx),
+  a: resolveTokens(f.a, ctx),
+}));
+
+// Related niches (cross-links — critical for programmatic SEO).
+const allNiches = await getCollection('niches');
+const relatedNiches = allNiches
+  .filter(n => n.data.slug !== niche.slug)
+  .slice(0, 3);
+
+const allLocations = await getCollection('locations');
+const relatedLocations = allLocations
+  .filter(l => l.data.slug !== location.slug)
+  .slice(0, 3);
+
+// SEO
+const metaTitle = `${niche.title} Dating in ${location.title} | Kindred`;
+const metaDesc = `${niche.description} Meet ${niche.plural ?? niche.title.toLowerCase()} across ${location.title} on Kindred.`;
+
+// JSON-LD FAQ schema — big SEO win, bolts on trivially.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+<BaseLayout title={metaTitle} description={metaDesc}>
+  <!-- HERO -->
+  <section class="hero hero--image" style={`background-image: linear-gradient(180deg, rgba(11,11,15,0.35), rgba(11,11,15,0.9)), url('${heroImage(seed)}');`}>
+    <div class="container">
+      <p class="hero__tagline">{niche.tagline ?? 'Adult dating, done right'}</p>
+      <h1>{heroHeadline}</h1>
+      <p class="hero__lead">{introPara}</p>
+      <div class="hero__actions">
+        <a href={SIGNUP_URL} target={SIGNUP_TARGET} rel={SIGNUP_REL} class="btn btn--primary">Join free</a>
+        <a href={`/${location.slug}/`} class="btn btn--ghost">More in {location.title}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Why Kindred</p>
+      <h2>Built for real connections in {location.title}</h2>
+      <p class="muted" style="max-width: 620px;">
+        {communityPara}
+      </p>
+      <ul class="clean benefits" style="margin-top: 28px;">
+        <li><strong>Niche-first matching</strong>{benefit1}</li>
+        <li><strong>Local community</strong>{benefit2}</li>
+        <li><strong>Trust &amp; safety</strong>{benefit3}</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section section--alt">
+    <div class="container">
+      <p class="eyebrow">How it works</p>
+      <h2>Three steps to meeting {niche.plural ?? niche.title.toLowerCase()} in {location.title}</h2>
+
+      <div class="grid grid--3" style="margin-top: 32px;">
+        <div class="step">
+          <div class="step__num">1</div>
+          <h3>Create your profile</h3>
+          <p class="muted">Takes two minutes. Tell us what you're into, upload a photo for verification, and you're on the site.</p>
+        </div>
+        <div class="step">
+          <div class="step__num">2</div>
+          <h3>Match on what matters</h3>
+          <p class="muted">{howItWorks}</p>
+        </div>
+        <div class="step">
+          <div class="step__num">3</div>
+          <h3>Message when you're ready</h3>
+          <p class="muted">Private by default. You decide who sees your photos and when. Meet in {location.title} when you're both comfortable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION DEEP-DIVE -->
+  {location.neighborhoods?.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <p class="eyebrow">Across {location.title}</p>
+        <h2>{niche.title} singles in every corner of {location.title}</h2>
+        <p class="muted" style="max-width: 640px;">
+          Our {niche.title.toLowerCase()} community stretches across {location.title} &mdash;
+          from {location.neighborhoods.slice(0, 3).join(', ')} and beyond. Here's where you'll find them.
+        </p>
+        <div class="grid grid--3" style="margin-top: 28px;">
+          {location.neighborhoods.map((n, i) => (
+            <article class="n-card">
+              <div class="n-card__img" style={`background-image: url('${cardImage(`${seed}:n${i}`)}');`}></div>
+              <div class="n-card__body">
+                <h3>{n}</h3>
+                <p class="muted" style="margin: 0; font-size: 0.92rem;">
+                  {pick(niche.pools, 'neighborhood_blurb', `${seed}:${n}`, { ...ctx, neighborhood: n })}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- TESTIMONIALS -->
+  {testimonials.length > 0 && (
+    <section class="section section--alt">
+      <div class="container">
+        <p class="eyebrow">Member stories</p>
+        <h2>What {location.title} members say</h2>
+        <div class="grid grid--3" style="margin-top: 28px;">
+          {testimonials.map(t => (
+            <figure class="testimonial">
+              <img src={t.avatar} alt="" class="testimonial__avatar" loading="lazy" width="64" height="64" />
+              <blockquote class="testimonial__quote">&ldquo;{t.quote}&rdquo;</blockquote>
+              <figcaption class="testimonial__name">&mdash; {t.name}, {location.title}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- SAFETY -->
+  <section class="section">
+    <div class="container" style="max-width: 760px;">
+      <p class="eyebrow">Trust &amp; safety</p>
+      <h2>We take safety in {location.title} seriously</h2>
+      <p class="muted">{safetyPara}</p>
+      <ul class="clean benefits" style="margin-top: 24px;">
+        <li><strong>Photo verification</strong>Required before messaging. Fake profiles removed within 24 hours of reporting.</li>
+        <li><strong>Scene-aware moderation</strong>{location.title} moderators are drawn from the community and understand context.</li>
+        <li><strong>Privacy first</strong>Legal names never shown. Private galleries controlled by you.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  {faqs.length > 0 && (
+    <section class="section section--alt">
+      <div class="container" style="max-width: 760px;">
+        <p class="eyebrow">Questions</p>
+        <h2>{niche.title} dating in {location.title} &mdash; FAQ</h2>
+        <div class="faq" style="margin-top: 24px;">
+          {faqs.map(f => (
+            <details class="faq__item">
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- RELATED NICHES -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Also in {location.title}</p>
+      <h2>Other interests on Kindred</h2>
+      <div class="grid grid--3" style="margin-top: 28px;">
+        {relatedNiches.map(n => (
+          <a href={`/${location.slug}/${n.data.slug}/`} class="card">
+            <span class="pill">{n.data.title}</span>
+            <h3 style="margin-top: 14px;">{n.data.title} in {location.title}</h3>
+            <p class="muted" style="margin: 0; font-size: 0.92rem;">{n.data.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- RELATED LOCATIONS -->
+  <section class="section section--tight">
+    <div class="container">
+      <p class="eyebrow">{niche.title} beyond {location.title}</p>
+      <h2>{niche.title} dating in other UK cities</h2>
+      <div class="grid grid--4" style="margin-top: 24px;">
+        {relatedLocations.map(l => (
+          <a href={`/${l.data.slug}/${niche.slug}/`} class="card">
+            <strong>{niche.title} in {l.data.title}</strong>
+            <p class="muted" style="margin: 4px 0 0; font-size: 0.88rem;">
+              {l.data.neighborhoods.slice(0, 2).join(', ')}
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING CTA -->
+  <section class="section">
+    <div class="container" style="text-align: center; max-width: 620px;">
+      <h2>{ctaHeadline}</h2>
+      <p class="muted">{closingPara}</p>
+      <a href={SIGNUP_URL} target={SIGNUP_TARGET} rel={SIGNUP_REL} class="btn btn--primary" style="margin-top: 12px;">
+        Create my profile
+      </a>
+      <p class="muted" style="margin-top: 14px; font-size: 0.8rem;">Free to join. 18+ only.</p>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</BaseLayout>

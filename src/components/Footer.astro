@@ -1,8 +1,21 @@
 ---
-const platform = "github";
-const username = "AaronChaos";
+import { SIGNUP_URL, SIGNUP_REL, SIGNUP_TARGET } from '../lib/config';
+const year = new Date().getFullYear();
 ---
-
-<footer>
-  <p>Learn more about my projects on <a href={`https://www.${platform}.com/${username}`}>{platform}</a>!</p>
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div>
+      <strong style="color: var(--c-text);">Kindred<span style="color: var(--c-accent);">.</span></strong>
+      <p style="margin: 4px 0 0; font-size: 0.85rem;">
+        Adult dating, done with respect. 18+ only.
+      </p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="/locations/" style="margin-right: 18px;">Locations</a>
+      <a href="/niches/" style="margin-right: 18px;">Interests</a>
+      <a href="/about/" style="margin-right: 18px;">About</a>
+      <a href={SIGNUP_URL} target={SIGNUP_TARGET} rel={SIGNUP_REL}>Join</a>
+    </nav>
+    <div style="font-size: 0.8rem;">&copy; {year} Kindred</div>
+  </div>
 </footer>

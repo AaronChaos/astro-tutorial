@@ -1,0 +1,79 @@
+{
+  "title": "Bondage",
+  "slug": "bondage",
+  "plural": "bondage enthusiasts",
+  "tagline": "Trust, tied together",
+  "description": "From shibari to silk ties, meet partners who value technique, trust, and connection.",
+  "pools": {
+    "hero_headline": [
+      "Find Your Bondage Match in {location}",
+      "Meet Bondage Singles Across {location}",
+      "Bondage Dating in {location} \u2014 Done Right",
+      "{location}'s Most Trusted Bondage Community",
+      "Connect With Bondage Singles in {location}"
+    ],
+    "intro_para": [
+      "The bondage community in {location} is tight-knit and welcoming. Whether you're drawn to shibari, western rope, or just starting to learn, Kindred is where {location}'s riggers, rope bottoms and curious beginners meet partners who prioritise technique and consent.",
+      "{location}'s bondage scene brings together experienced riggers, thoughtful rope bottoms, and curious beginners who want to learn properly. Verified profiles, a detailed skill/experience filter, and a community that takes safety seriously.",
+      "Discover partners across {location} who share your interest in rope, restraint, and the trust that makes it all work. Kindred's {location} community runs workshops, jams and social events \u2014 and this is where the members meet online."
+    ],
+    "cta_headline": [
+      "Start connecting in {location} tonight",
+      "Join {location}'s bondage community",
+      "Your next tie is one message away"
+    ],
+    "benefit_1": [
+      "Filter by rope style, role and experience",
+      "Private galleries you control",
+      "Verified members only"
+    ],
+    "benefit_2": [
+      "Active {location} rope jams and workshops",
+      "Mentor-matching for beginners",
+      "Rigorous safety-first community standards"
+    ],
+    "benefit_3": [
+      "Free basic membership",
+      "10,000+ active UK members",
+      "Moderated by experienced community members"
+    ],
+    "safety_para": [
+      "Bondage is a skill before it's a kink. Kindred's {location} community reflects that \u2014 verified profiles, a mentor-matching programme for beginners, and moderators with genuine scene experience who review reports within 24 hours.",
+      "Nerve damage, unsafe ties, and ignoring a safeword are all report-worthy here. {location}'s moderators know what they're looking at and take it seriously. Consent and skill are non-negotiable.",
+      "Safety standards in {location}'s Kindred bondage community are set by the community itself. Experienced members mentor beginners, dangerous practices are called out, and moderators take action. It's how the scene stays safe."
+    ],
+    "how_it_works_para": [
+      "Tell us your experience level, preferred rope style (shibari, western, decorative, functional) and role. We'll match you with {location} members whose profiles line up \u2014 whether you're looking for a practice partner, a mentor, or something deeper.",
+      "Sign up, list your experience and what you're looking for, and {location}'s community shows up in your feed. Private galleries mean your photos stay between you and the people you trust.",
+      "Your profile says what you do, what you want to learn, and what you'd never do. Our filters find {location} members who line up with that, and you take it from there."
+    ],
+    "community_para": [
+      "{location}'s bondage community has been running workshops, jams and social events for years. Kindred is the online meeting point \u2014 where the same faces you'd see at a local rope jam gather to stay in touch between events.",
+      "From shibari practitioners to decorative-rope artists, {location}'s Kindred community covers every corner of the scene. Members share tutorials, organise jams, and mentor each other \u2014 this is a community that teaches.",
+      "Rope is a community practice \u2014 you can't learn it alone. {location}'s Kindred bondage community is where local riggers and bottoms connect to practice, learn and meet."
+    ],
+    "neighborhood_blurb": [
+      "This part of {location} has an especially active beginner-friendly community with regular learning jams.",
+      "Long-term rope practitioners are especially common in this corner of {location} and often happy to mentor.",
+      "A pocket of {location} with a strong workshop culture \u2014 several ongoing study groups are based here."
+    ],
+    "closing_para": [
+      "Whether you're a seasoned rigger, a bottom with twenty years in the scene, or someone who just watched a documentary and got curious \u2014 {location}'s bondage community welcomes you on Kindred.",
+      "Rope takes practice. Kindred is where {location}'s community meets online to find partners, mentors and study buddies to practice with.",
+      "{location}'s bondage scene is one of the most welcoming in the UK. Come see why."
+    ]
+  },
+  "faqs": [
+    { "q": "I'm a complete beginner. Will anyone want to tie with me?", "a": "Yes \u2014 {location}'s community includes members who specifically want to mentor beginners. Look for the 'happy to teach' badge." },
+    { "q": "What rope styles does the {location} community cover?", "a": "Everything from shibari and kinbaku to western rope and decorative. The community is broad and members are usually happy to share styles." },
+    { "q": "Is the community safety-focused?", "a": "Seriously so. Unsafe practices are called out by the community itself and reportable to moderators. Nerve damage is not romantic." },
+    { "q": "Are meetups in person?", "a": "Kindred's {location} community lists local rope jams and workshops run by verified members. We don't host \u2014 we just connect." },
+    { "q": "Can I keep my profile discreet?", "a": "Yes. Legal names are never shown. Photos default to private for bondage imagery." },
+    { "q": "How much does Kindred cost?", "a": "Free basic membership including verified messaging. Premium unlocks advanced filters and larger galleries." }
+  ],
+  "testimonials": [
+    { "name": "Wren, 36", "quote": "Found my rope mentor in {location} within two weeks. The skill level on this site is real." },
+    { "name": "Pat, 44", "quote": "Been doing shibari for fifteen years. Kindred's {location} community is full of the same faces I see at jams." },
+    { "name": "Riley, 28", "quote": "Started as a total beginner. {location}'s community was patient, welcoming, and actually taught me properly." }
+  ]
+}
