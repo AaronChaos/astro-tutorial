@@ -1,4 +1,8 @@
 ---
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
 const pageTitle = "About Me";
 
 const identity = {
@@ -43,9 +47,7 @@ const textCase = "uppercase";
         </style>
 	</head>
 	<body>
-        <a href="/">Home</a>
-        <a href="/about/">About</a>
-        <a href="/blog/">Blog</a>
+    <Navigation />
 		<h1>{pageTitle}</h1>
         <p>I am a top-level vibe coder now working in Astro and PhantomWP to make some rapid dating websites.</p>
 	<p>Here are a few facts about me:</p>
@@ -66,6 +68,7 @@ const textCase = "uppercase";
 {finished && <p>I finished this tutorial!</p>}
 
 {goal === 3 ? <p>My goal is to finish in 3 days.</p> : <p>My goal is not 3 days.</p>}
+		<Footer />
 
     </body>
 </html>
