@@ -14,6 +14,9 @@ const happy = true;
 const finished = false;
 const goal = 3;
 
+const skillColor = "blue";
+const textCase = "uppercase";
+
 ---
 
 <html lang="en">
@@ -24,6 +27,20 @@ const goal = 3;
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{pageTitle}</title>
+        <style define:vars={{skillColor, textCase}}>
+            h1 {
+                color: red;
+                background: whitesmoke;
+                padding: 20px;
+                border-radius: 4px;
+            }
+            .about-me__skill {
+                color: var(--skillColor);
+                font-weight: bold;
+                text-transform: var(--textCase);
+            }
+
+        </style>
 	</head>
 	<body>
         <a href="/">Home</a>
@@ -41,7 +58,7 @@ const goal = 3;
 </ul>
 <p>My skills are:</p>
 <ul>
-  {skills.map((skill) => <li>{skill}</li>)}
+  {skills.map((skill) => <li class="about-me__skill">{skill}</li>)}
 </ul>
 
 {happy && <p>I am happy to be learning Astro!</p>}
