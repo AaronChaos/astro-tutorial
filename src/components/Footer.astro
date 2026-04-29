@@ -1,21 +1,120 @@
 ---
-import { SIGNUP_URL, SIGNUP_REL, SIGNUP_TARGET } from '../lib/config';
+/**
+ * Footer — driven by WP site-settings + footer column menus.
+ *
+ * Configurable per site from WP: number of columns (one..six), each column's
+ * heading + nav menu, brand logo, colors, and the legal menu.
+ */
+import { getSiteContext, resolveMenu, type MenuRef } from '../lib/wp';
+
+const { settings, menus } = await getSiteContext();
 const year = new Date().getFullYear();
+
+const columnCountMap: Record<string, number> = {
+  one: 1, two: 2, three: 3, four: 4, five: 5, six: 6,
+};
+const columnCount = columnCountMap[String(settings.footer_columns ?? 'four')] ?? 4;
+const ordinals = ['one', 'two', 'three', 'four', 'five', 'six'] as const;
+
+// Pull the configured column heading + menu pairs up to columnCount.
+const columns = ordinals.slice(0, columnCount).map(ord => ({
+  heading: settings[`footer_column_${ord}_heading`] as string | undefined,
+  menu: resolveMenu(menus, settings[`footer_column_${ord}_menu`] as MenuRef | undefined),
+}));
+
+const legalMenu = resolveMenu(menus, settings.footer_legal_menu);
+const brand = settings.global_domain_name ?? 'Site';
+
+// Style overrides from WP color settings (only applied if set).
+const bg = (settings.footer_background_colour as { color?: string } | undefined)?.color;
+const textColor = (settings.footer_text_colour as { color?: string } | undefined)?.color;
+const linkColor = (settings.footer_link_colour as { color?: string } | undefined)?.color;
+const copyColor = (settings.footer_copyright_text_colour as { color?: string } | undefined)?.color;
+
+const footerStyle = [
+  bg && `background: ${bg};`,
+  textColor && `color: ${textColor};`,
+].filter(Boolean).join(' ');
 ---
-<footer class="site-footer">
-  <div class="container site-footer__inner">
-    <div>
-      <strong style="color: var(--c-text);">Kindred<span style="color: var(--c-accent);">.</span></strong>
-      <p style="margin: 4px 0 0; font-size: 0.85rem;">
-        Adult dating, done with respect. 18+ only.
-      </p>
+<footer class="site-footer" style={footerStyle || undefined}>
+  <div class="container">
+    {settings.footer_logo && (
+      <div style="margin-bottom: 24px;">
+        <img src={settings.footer_logo} alt={brand} style="max-height: 48px; width: auto;" />
+      </div>
+    )}
+
+    {columns.length > 0 && (
+      <div class={`site-footer__cols site-footer__cols--${columnCount}`}>
+        {columns.map(col => (
+          <div class="site-footer__col">
+            {col.heading && <h4 class="site-footer__heading">{col.heading}</h4>}
+            {col.menu?.items
+              ?.filter(i => i.parent === 0)
+              .sort((a, b) => a.order - b.order)
+              .map(item => (
+                <a
+                  href={item.url}
+                  target={item.target || undefined}
+                  style={linkColor ? `color: ${linkColor};` : undefined}
+                >{item.title}</a>
+              ))}
+          </div>
+        ))}
+      </div>
+    )}
+
+    <div class="site-footer__legal" style={copyColor ? `color: ${copyColor};` : undefined}>
+      <span>&copy; {year} {brand}</span>
+      {legalMenu?.items
+        ?.filter(i => i.parent === 0)
+        .sort((a, b) => a.order - b.order)
+        .map(item => (
+          <a
+            href={item.url}
+            target={item.target || undefined}
+            style={linkColor ? `color: ${linkColor};` : undefined}
+          >{item.title}</a>
+        ))}
     </div>
-    <nav aria-label="Footer">
-      <a href="/locations/" style="margin-right: 18px;">Locations</a>
-      <a href="/niches/" style="margin-right: 18px;">Interests</a>
-      <a href="/about/" style="margin-right: 18px;">About</a>
-      <a href={SIGNUP_URL} target={SIGNUP_TARGET} rel={SIGNUP_REL}>Join</a>
-    </nav>
-    <div style="font-size: 0.8rem;">&copy; {year} Kindred</div>
   </div>
 </footer>
+
+<style>
+  .site-footer__cols {
+    display: grid;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+  .site-footer__cols--1 { grid-template-columns: 1fr; }
+  .site-footer__cols--2 { grid-template-columns: repeat(2, 1fr); }
+  .site-footer__cols--3 { grid-template-columns: repeat(3, 1fr); }
+  .site-footer__cols--4 { grid-template-columns: repeat(4, 1fr); }
+  .site-footer__cols--5 { grid-template-columns: repeat(5, 1fr); }
+  .site-footer__cols--6 { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 768px) {
+    .site-footer__cols { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .site-footer__cols { grid-template-columns: 1fr; }
+  }
+  .site-footer__col a {
+    display: block;
+    padding: 4px 0;
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+  .site-footer__heading {
+    font-size: 0.95rem;
+    margin: 0 0 8px;
+  }
+  .site-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.85rem;
+  }
+  .site-footer__legal a { text-decoration: none; }
+</style>

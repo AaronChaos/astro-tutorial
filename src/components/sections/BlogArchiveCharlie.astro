@@ -1,0 +1,35 @@
+---
+/** BlogArchiveCharlie — `blog_archive_charlie`. Card grid archive. */
+import { wp } from '../../lib/wp';
+import type { BlogArchiveCharlieSection } from '../../lib/wp';
+interface Props { data: BlogArchiveCharlieSection; }
+const { data } = Astro.props;
+const posts = await wp.getPosts({ limit: 12 });
+---
+<section class="section blog-archive-charlie">
+  <div class="container">
+    {data.blog_charlie_heading && <h2>{data.blog_charlie_heading}</h2>}
+    {data.blog_charlie_introduction && <p class="blog-archive-charlie__intro">{data.blog_charlie_introduction}</p>}
+    <div class="blog-archive-charlie__grid">
+      {posts.map(p => (
+        <a class="blog-archive-charlie__card" href={`/blog/${p.slug}`}>
+          {p.featured_image && <img src={p.featured_image.url} alt={p.featured_image.alt} loading="lazy" />}
+          <div class="blog-archive-charlie__card-body">
+            <h3 set:html={p.title.rendered} />
+            <time datetime={p.date}>{new Date(p.date).toLocaleDateString('en-GB')}</time>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .blog-archive-charlie__intro { opacity: 0.85; max-width: 640px; margin-bottom: 32px; }
+  .blog-archive-charlie__grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .blog-archive-charlie__grid { grid-template-columns: repeat(3, 1fr); } }
+  .blog-archive-charlie__card { display: block; text-decoration: none; color: inherit; background: rgba(255,255,255,0.04); border-radius: 12px; overflow: hidden; }
+  .blog-archive-charlie__card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+  .blog-archive-charlie__card-body { padding: 16px; }
+  .blog-archive-charlie__card h3 { margin: 0 0 6px; font-size: 1rem; }
+  .blog-archive-charlie__card time { opacity: 0.6; font-size: 0.85rem; }
+</style>

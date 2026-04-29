@@ -1,0 +1,105 @@
+---
+/**
+ * MembersGrid — mirrors the `members_grid` ACF flexible content layout.
+ *
+ * Fetches members from the HubPeople feed at build time, filtered by the
+ * section's location/age params (or the site-wide defaults if
+ * members_grid_use_defaults is true).
+ */
+import type { MembersGridSection, AcfColor } from '../../lib/wp';
+import { wp } from '../../lib/wp';
+
+interface Props { data: MembersGridSection; }
+
+const { data } = Astro.props;
+
+const useDefaults = !!data.members_grid_use_defaults;
+const ageRange = data.members_grid_age_range ?? {};
+const loc = data.members_grid_location ?? {};
+
+const fetchOpts = useDefaults
+  ? { limit: data.members_grid_results ?? 12 }
+  : {
+      limit: data.members_grid_results ?? 12,
+      city: loc.members_grid_city || undefined,
+      region: loc.members_grid_region || undefined,
+    };
+
+let members: Awaited<ReturnType<typeof wp.getMembers>>['members'] = [];
+let fetchError: string | null = null;
+try {
+  const res = await wp.getMembers(fetchOpts);
+  members = res.members;
+} catch (err) {
+  fetchError = err instanceof Error ? err.message : String(err);
+}
+
+const bgRaw = data.members_grid_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const imgSize = data.members_grid_image_size ?? 200;
+---
+<section class="section members-grid" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    {data.members_grid_heading && <h2>{data.members_grid_heading}</h2>}
+    {data.members_grid_introduction && (
+      <p class="members-grid__intro">{data.members_grid_introduction}</p>
+    )}
+
+    {fetchError && (
+      <p class="members-grid__error">Members feed unavailable.</p>
+    )}
+
+    {!fetchError && members.length === 0 && (
+      <p class="members-grid__empty">No members to show right now.</p>
+    )}
+
+    {members.length > 0 && (
+      <div class="members-grid__grid">
+        {members.map(m => (
+          <article class="member-card">
+            <div class="member-card__media" style={`aspect-ratio: 1 / 1; max-width: ${imgSize}px;`}>
+              <img src={m.MemberImage} alt={`${m.MemberName} profile photo`} loading="lazy" />
+            </div>
+            <div class="member-card__body">
+              <h3 class="member-card__name">
+                {m.MemberName}
+                {m.MemberAge ? <span class="member-card__age">, {m.MemberAge}</span> : null}
+                {m.IdVerified && <span class="member-card__verified" title="ID verified">✓</span>}
+              </h3>
+              {m.City && <p class="member-card__loc">{m.City}{m.Region ? `, ${m.Region.split(':').pop()?.trim()}` : ''}</p>}
+              {m.Headline && <p class="member-card__headline">{m.Headline}</p>}
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .members-grid__intro { opacity: 0.85; margin-bottom: 24px; max-width: 600px; }
+  .members-grid__error { color: #c44; padding: 16px; border: 1px solid #c44; border-radius: 8px; }
+  .members-grid__empty { opacity: 0.7; }
+  .members-grid__grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  .member-card {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .member-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .member-card__body { padding: 12px 14px; }
+  .member-card__name { margin: 0 0 4px; font-size: 1rem; }
+  .member-card__age { opacity: 0.7; font-weight: normal; }
+  .member-card__verified { color: #6c6; margin-left: 6px; }
+  .member-card__loc { margin: 0 0 6px; font-size: 0.85rem; opacity: 0.7; }
+  .member-card__headline { margin: 0; font-size: 0.85rem; line-height: 1.4; opacity: 0.85; }
+</style>

@@ -1,0 +1,23 @@
+---
+/** PageTitleDelta — `page_title_delta`. Compact bordered variant. */
+import type { PageTitleDeltaSection } from '../../lib/wp';
+interface Props { data: PageTitleDeltaSection; }
+const { data } = Astro.props;
+---
+<section class="section page-title page-title-delta">
+  <div class="container">
+    {data.page_title_delta_heading && <h1>{data.page_title_delta_heading}</h1>}
+    {data.page_title_delta_breadcrumbs && (
+      <nav class="page-title__crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span>/</span> <span>{data.page_title_delta_heading}</span>
+      </nav>
+    )}
+  </div>
+</section>
+<style>
+  .page-title-delta { padding: 32px 0; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; }
+  .page-title-delta .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .page-title-delta h1 { margin: 0; font-size: 1.5rem; }
+  .page-title-delta .page-title__crumbs { opacity: 0.75; font-size: 0.9rem; }
+  .page-title-delta .page-title__crumbs a { color: inherit; text-decoration: none; }
+</style>

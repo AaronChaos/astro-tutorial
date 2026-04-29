@@ -1,14 +1,41 @@
 ---
-import { SIGNUP_URL, SIGNUP_REL, SIGNUP_TARGET } from '../lib/config';
+/**
+ * Header — driven by WP site-settings + the `main-menu` nav menu.
+ *
+ * Per-site branding (logo, button text/url, colors) lives in WP under
+ * "Site Settings" (ACF options page). Editing in WP rebuilds the site.
+ */
+import { getSiteContext } from '../lib/wp';
+
+const { settings, menus } = await getSiteContext();
+const main = menus['main-menu'];
+
+const logo = settings.header_logo;
+const logoSize = settings.header_logo_size ? `${settings.header_logo_size}px` : '120px';
+const showButton = settings.header_show_button !== false;
+const buttonText = settings.header_button_text ?? 'Join free';
+const buttonLink = settings.header_button_link ?? '#';
 ---
 <header class="site-header">
   <div class="container site-header__inner">
-    <a href="/" class="site-header__logo">Kindred<span>.</span></a>
+    <a href="/" class="site-header__logo" aria-label="Home">
+      {logo
+        ? <img src={logo} alt="" style={`max-width: ${logoSize}; height: auto;`} />
+        : <span>{settings.global_domain_name ?? 'Site'}</span>
+      }
+    </a>
+
     <nav class="site-nav" aria-label="Primary">
-      <a href="/locations/">Locations</a>
-      <a href="/niches/">Interests</a>
-      <a href="/about/">About</a>
-      <a href={SIGNUP_URL} target={SIGNUP_TARGET} rel={SIGNUP_REL} class="btn btn--primary">Join free</a>
+      {main?.items
+        ?.filter(i => i.parent === 0)
+        .sort((a, b) => a.order - b.order)
+        .map(item => (
+          <a href={item.url} target={item.target || undefined}>{item.title}</a>
+        ))}
+
+      {showButton && (
+        <a href={buttonLink} class="btn btn--primary">{buttonText}</a>
+      )}
     </nav>
   </div>
 </header>

@@ -1,0 +1,38 @@
+---
+/** BlogArchiveAlpha — `blog_archive_alpha`. Heading + intro, then full posts list. */
+import { wp } from '../../lib/wp';
+import type { BlogArchiveAlphaSection } from '../../lib/wp';
+interface Props { data: BlogArchiveAlphaSection; }
+const { data } = Astro.props;
+const posts = await wp.getPosts({ limit: 24 });
+---
+<section class="section blog-archive blog-archive-alpha">
+  <div class="container">
+    {data.blog_alpha_heading && <h2>{data.blog_alpha_heading}</h2>}
+    {data.blog_alpha_introduction && <p class="blog-archive__intro">{data.blog_alpha_introduction}</p>}
+    <ul class="blog-archive__list">
+      {posts.map(p => (
+        <li class="blog-archive__item">
+          <a href={`/blog/${p.slug}`}>
+            {p.featured_image && <img src={p.featured_image.url} alt={p.featured_image.alt} loading="lazy" />}
+            <div>
+              <h3 set:html={p.title.rendered} />
+              <p class="blog-archive__excerpt" set:html={p.excerpt.rendered} />
+              <time datetime={p.date}>{new Date(p.date).toLocaleDateString('en-GB')}</time>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+<style>
+  .blog-archive__intro { opacity: 0.85; max-width: 640px; margin-bottom: 32px; }
+  .blog-archive__list { list-style: none; padding: 0; margin: 0; display: grid; gap: 24px; }
+  .blog-archive__item a { display: grid; gap: 16px; grid-template-columns: 200px 1fr; align-items: start; color: inherit; text-decoration: none; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .blog-archive__item img { width: 200px; height: 130px; object-fit: cover; border-radius: 8px; }
+  .blog-archive__item h3 { margin: 0 0 8px; }
+  .blog-archive__excerpt { margin: 0 0 8px; opacity: 0.85; line-height: 1.5; }
+  .blog-archive__item time { font-size: 0.85rem; opacity: 0.6; }
+  @media (max-width: 640px) { .blog-archive__item a { grid-template-columns: 1fr; } .blog-archive__item img { width: 100%; } }
+</style>

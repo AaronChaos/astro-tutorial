@@ -1,0 +1,29 @@
+---
+/** CtaBeta — `cta_beta`. Side image + text + single button. */
+import type { CtaBetaSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: CtaBetaSection; }
+const { data } = Astro.props;
+const bgRaw = data.cta_beta_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const img = data.cta_beta_image as WpImage | null | undefined;
+const imgUrl = img && typeof img === 'object' ? img.url : null;
+---
+<section class="section cta-beta" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container cta-beta__grid">
+    <div class="cta-beta__text">
+      {data.cta_beta_heading && <h2>{data.cta_beta_heading}</h2>}
+      {data.cta_beta_introduction && <p>{data.cta_beta_introduction}</p>}
+      {data.cta_beta_button_text && data.cta_beta_button_url && (
+        <a href={data.cta_beta_button_url} class="btn btn--primary">{data.cta_beta_button_text}</a>
+      )}
+    </div>
+    {imgUrl && <img src={imgUrl} alt={(typeof img === 'object' && img?.alt) || ''} loading="lazy" class="cta-beta__image" />}
+  </div>
+</section>
+<style>
+  .cta-beta { padding: 60px 0; }
+  .cta-beta__grid { display: grid; gap: 32px; align-items: center; grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .cta-beta__grid { grid-template-columns: 1fr 1fr; } }
+  .cta-beta__image { width: 100%; height: auto; border-radius: 12px; }
+  .cta-beta__text .btn { margin-top: 16px; }
+</style>

@@ -1,0 +1,55 @@
+---
+/** BlogFeedCharlie — `blog_feed_charlie`. Featured + secondary posts layout. */
+import { wp } from '../../lib/wp';
+import type { BlogFeedCharlieSection, AcfColor } from '../../lib/wp';
+interface Props { data: BlogFeedCharlieSection; }
+const { data } = Astro.props;
+const bgRaw = data.blog_feed_charlie_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const cardRaw = data.blog_feed_charlie_card_background_colour;
+const cardBg = typeof cardRaw === 'string' ? cardRaw : (cardRaw as AcfColor | undefined)?.color;
+const posts = await wp.getPosts({ limit: 5 });
+const [featured, ...rest] = posts;
+---
+<section class="section blog-feed-charlie" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    {data.blog_feed_charlie_heading && <h2>{data.blog_feed_charlie_heading}</h2>}
+    {data.blog_feed_charlie_introduction && <p class="blog-feed-charlie__intro">{data.blog_feed_charlie_introduction}</p>}
+    <div class="blog-feed-charlie__layout">
+      {featured && (
+        <a class="blog-feed-charlie__featured" href={`/blog/${featured.slug}`} style={cardBg ? `background: ${cardBg};` : undefined}>
+          {featured.featured_image && <img src={featured.featured_image.url} alt={featured.featured_image.alt} loading="eager" />}
+          <div class="blog-feed-charlie__featured-body">
+            <h3 set:html={featured.title.rendered} />
+            <p set:html={featured.excerpt.rendered} />
+            <time datetime={featured.date}>{new Date(featured.date).toLocaleDateString('en-GB')}</time>
+          </div>
+        </a>
+      )}
+      <ul class="blog-feed-charlie__rest">
+        {rest.map(p => (
+          <li>
+            <a href={`/blog/${p.slug}`} style={cardBg ? `background: ${cardBg};` : undefined}>
+              <h4 set:html={p.title.rendered} />
+              <time datetime={p.date}>{new Date(p.date).toLocaleDateString('en-GB')}</time>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+<style>
+  .blog-feed-charlie__intro { opacity: 0.85; max-width: 640px; margin-bottom: 32px; }
+  .blog-feed-charlie__layout { display: grid; gap: 24px; grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .blog-feed-charlie__layout { grid-template-columns: 1.5fr 1fr; } }
+  .blog-feed-charlie__featured { display: block; text-decoration: none; color: inherit; background: rgba(255,255,255,0.04); border-radius: 12px; overflow: hidden; }
+  .blog-feed-charlie__featured img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+  .blog-feed-charlie__featured-body { padding: 20px; }
+  .blog-feed-charlie__featured-body h3 { margin: 0 0 8px; }
+  .blog-feed-charlie__featured-body p { margin: 0 0 8px; opacity: 0.85; line-height: 1.5; }
+  .blog-feed-charlie__rest { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  .blog-feed-charlie__rest a { display: block; padding: 16px; border-radius: 12px; background: rgba(255,255,255,0.04); color: inherit; text-decoration: none; }
+  .blog-feed-charlie__rest h4 { margin: 0 0 4px; font-size: 1rem; }
+  .blog-feed-charlie__rest time { opacity: 0.6; font-size: 0.85rem; }
+</style>

@@ -1,0 +1,26 @@
+---
+/** CtaFoxtrot — `cta_foxtrot`. Compact banner with single button. */
+import type { CtaFoxtrotSection, AcfColor } from '../../lib/wp';
+interface Props { data: CtaFoxtrotSection; }
+const { data } = Astro.props;
+const bgRaw = data.cta_foxtrot_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+---
+<section class="section cta-foxtrot" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container cta-foxtrot__inner">
+    <div class="cta-foxtrot__text">
+      {data.cta_foxtrot_heading && <h2>{data.cta_foxtrot_heading}</h2>}
+      {data.cta_foxtrot_introduction && <p>{data.cta_foxtrot_introduction}</p>}
+    </div>
+    {data.cta_foxtrot_button_text && data.cta_foxtrot_button_url && (
+      <a href={data.cta_foxtrot_button_url} class="btn btn--primary">{data.cta_foxtrot_button_text}</a>
+    )}
+  </div>
+</section>
+<style>
+  .cta-foxtrot { padding: 32px 0; }
+  .cta-foxtrot__inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .cta-foxtrot__text { flex: 1; min-width: 280px; }
+  .cta-foxtrot__text h2 { margin: 0 0 4px; }
+  .cta-foxtrot__text p { margin: 0; opacity: 0.85; }
+</style>

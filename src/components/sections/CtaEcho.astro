@@ -1,0 +1,28 @@
+---
+/** CtaEcho — `cta_echo`. Image header + centred text + buttons. */
+import type { CtaEchoSection, WpImage } from '../../lib/wp';
+interface Props { data: CtaEchoSection; }
+const { data } = Astro.props;
+const img = data.cta_echo_image as WpImage | null | undefined;
+const imgUrl = img && typeof img === 'object' ? img.url : null;
+const buttons = data.cta_echo_cta_buttons ?? [];
+---
+<section class="section cta-echo">
+  <div class="container cta-echo__inner">
+    {imgUrl && <img src={imgUrl} alt={(typeof img === 'object' && img?.alt) || ''} loading="lazy" class="cta-echo__image" />}
+    {data.cta_echo_heading && <h2>{data.cta_echo_heading}</h2>}
+    {data.cta_echo_introduction && <p class="cta-echo__intro">{data.cta_echo_introduction}</p>}
+    {buttons.length > 0 && (
+      <div class="cta-echo__actions">
+        {buttons.map(b => <a href={b.cta_echo_button_url} class="btn btn--primary">{b.cta_echo_button_text}</a>)}
+      </div>
+    )}
+  </div>
+</section>
+<style>
+  .cta-echo { padding: 60px 0; text-align: center; }
+  .cta-echo__inner { max-width: 640px; margin: 0 auto; }
+  .cta-echo__image { width: 96px; height: 96px; object-fit: cover; border-radius: 50%; margin-bottom: 16px; }
+  .cta-echo__intro { font-size: 1.05rem; opacity: 0.9; margin: 16px 0 24px; }
+  .cta-echo__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+</style>

@@ -1,0 +1,62 @@
+---
+/** FeatureAlpha — `feature_alpha` ACF layout. Grid of feature blocks with image + heading + content + button. */
+import type { FeatureAlphaSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: FeatureAlphaSection; }
+const { data } = Astro.props;
+
+const bgRaw = data.feature_alpha_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const blocks = data.feature_alpha_block ?? [];
+---
+<section class="section feature-alpha" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    <div class="feature-alpha__grid" data-cols={Math.min(blocks.length, 4)}>
+      {blocks.map(b => {
+        const img = b.feature_alpha_image as WpImage | null | undefined;
+        const imgUrl = img && typeof img === 'object' ? img.url : null;
+        return (
+          <article class="feature-alpha__card">
+            {imgUrl && <img src={imgUrl} alt={(typeof img === 'object' && img?.alt) || ''} loading="lazy" class="feature-alpha__img" />}
+            {b.feature_alpha_heading && <h3>{b.feature_alpha_heading}</h3>}
+            {b.feature_alpha_main_content && <p class="feature-alpha__body">{b.feature_alpha_main_content}</p>}
+            {b.feature_alpha_button_text && b.feature_alpha_button_url && (
+              <a href={b.feature_alpha_button_url} class="feature-alpha__link">{b.feature_alpha_button_text} →</a>
+            )}
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .feature-alpha__grid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 768px) {
+    .feature-alpha__grid[data-cols="2"] { grid-template-columns: repeat(2, 1fr); }
+    .feature-alpha__grid[data-cols="3"] { grid-template-columns: repeat(3, 1fr); }
+    .feature-alpha__grid[data-cols="4"] { grid-template-columns: repeat(4, 1fr); }
+  }
+  .feature-alpha__card {
+    background: rgba(255,255,255,0.04);
+    padding: 24px;
+    border-radius: 12px;
+  }
+  .feature-alpha__img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  .feature-alpha__body { line-height: 1.6; opacity: 0.85; }
+  .feature-alpha__link {
+    display: inline-block;
+    margin-top: 12px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+</style>

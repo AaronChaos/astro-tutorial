@@ -1,0 +1,42 @@
+---
+/** ProcessCharlie — `process_charlie`. Each step has its own background image. */
+import type { ProcessCharlieSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: ProcessCharlieSection; }
+const { data } = Astro.props;
+const bgRaw = data.process_charlie_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const steps = data.process_charlie_steps ?? [];
+---
+<section class="section process-charlie" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    {data.process_charlie_heading && <h2>{data.process_charlie_heading}</h2>}
+    {data.process_charlie_introduction && <p class="process-charlie__intro">{data.process_charlie_introduction}</p>}
+    {steps.length > 0 && (
+      <div class="process-charlie__steps">
+        {steps.map((s, i) => {
+          const img = s.process_charlie_steps_background_image as WpImage | null | undefined;
+          const url = img && typeof img === 'object' ? img.url : null;
+          return (
+            <article
+              class="process-charlie__step"
+              style={url ? `background-image: linear-gradient(180deg, rgba(11,11,15,0.4), rgba(11,11,15,0.85)), url('${url}'); background-size: cover; background-position: center;` : undefined}
+            >
+              <div class="process-charlie__num">{i + 1}</div>
+              {s.process_charlie_steps_subheading && <h3>{s.process_charlie_steps_subheading}</h3>}
+              {s.process_charlie_steps_content && <p>{s.process_charlie_steps_content}</p>}
+            </article>
+          );
+        })}
+      </div>
+    )}
+  </div>
+</section>
+<style>
+  .process-charlie__intro { opacity: 0.85; max-width: 600px; margin-bottom: 32px; }
+  .process-charlie__steps { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .process-charlie__steps { grid-template-columns: repeat(3, 1fr); } }
+  .process-charlie__step { padding: 24px; border-radius: 12px; min-height: 220px; display: flex; flex-direction: column; justify-content: flex-end; color: #fff; background: rgba(255,255,255,0.04); }
+  .process-charlie__num { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: auto; }
+  .process-charlie__step h3 { margin: 12px 0 6px; font-size: 1.1rem; }
+  .process-charlie__step p { margin: 0; opacity: 0.9; line-height: 1.5; }
+</style>

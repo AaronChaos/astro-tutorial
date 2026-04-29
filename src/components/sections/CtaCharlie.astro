@@ -1,0 +1,44 @@
+---
+/** CtaCharlie — `cta_charlie`. 8-image gallery + heading + buttons. */
+import type { CtaCharlieSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: CtaCharlieSection; }
+const { data } = Astro.props;
+const bgRaw = data.cta_charlie_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const containerRaw = data.cta_charlie_container_background_colour;
+const containerBg = typeof containerRaw === 'string' ? containerRaw : (containerRaw as AcfColor | undefined)?.color;
+const imgs = [
+  data.cta_charlie_image_one, data.cta_charlie_image_two, data.cta_charlie_image_three, data.cta_charlie_image_four,
+  data.cta_charlie_image_five, data.cta_charlie_image_six, data.cta_charlie_image_seven, data.cta_charlie_image_eight,
+].map(i => (i && typeof i === 'object' ? (i as WpImage) : null)).filter(Boolean) as WpImage[];
+const buttons = data.cta_charlie_cta_buttons ?? [];
+---
+<section class="section cta-charlie" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    <div class="cta-charlie__panel" style={containerBg ? `background: ${containerBg};` : undefined}>
+      <div class="cta-charlie__text">
+        {data.cta_charlie_heading && <h2>{data.cta_charlie_heading}</h2>}
+        {data.cta_charlie_introduction && <p>{data.cta_charlie_introduction}</p>}
+        {buttons.length > 0 && (
+          <div class="cta-charlie__actions">
+            {buttons.map(b => <a href={b.cta_charlie_button_url} class="btn btn--primary">{b.cta_charlie_button_text}</a>)}
+          </div>
+        )}
+      </div>
+      {imgs.length > 0 && (
+        <div class="cta-charlie__gallery">
+          {imgs.map((img, i) => (
+            <img src={img.url} alt={img.alt ?? ''} loading={i < 4 ? 'eager' : 'lazy'} />
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+<style>
+  .cta-charlie__panel { padding: 32px; border-radius: 16px; display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 768px) { .cta-charlie__panel { grid-template-columns: 1fr 1fr; } }
+  .cta-charlie__actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+  .cta-charlie__gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .cta-charlie__gallery img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
+</style>

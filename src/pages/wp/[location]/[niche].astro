@@ -1,0 +1,43 @@
+---
+/**
+ * WP-driven landing page (test route).
+ *
+ * Pulls landing pages from PhantomWP via the astro-headless mu-plugin.
+ * Renders ACF flexible content via SectionRenderer.
+ *
+ * Lives at /wp/{location}/{niche} so the existing JSON-driven
+ * /{location}/{niche} route keeps working during the transition.
+ */
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SectionRenderer from '../../../components/SectionRenderer.astro';
+import { wp, resolveSectionImages, type Section } from '../../../lib/wp';
+
+export async function getStaticPaths() {
+  // One round trip: pull every landing-page with its location/niche slugs baked in.
+  const landingPages = await wp.getLandingPages();
+  return landingPages
+    .filter(lp => lp.location.slug && lp.niche.slug)
+    .map(lp => ({
+      params: { location: lp.location.slug, niche: lp.niche.slug },
+      props: { lp },
+    }));
+}
+
+const { lp } = Astro.props as { lp: import('../../../lib/wp').LandingPage };
+
+const rawSections = (lp.acf.page_sections ?? []) as Section[];
+const sections = await resolveSectionImages(rawSections);
+
+const metaTitle = `${lp.title} | ${lp.niche.title} dating in ${lp.location.title}`;
+const metaDesc = `Meet ${lp.niche.title.toLowerCase()} singles in ${lp.location.title}.`;
+---
+<BaseLayout title={metaTitle} description={metaDesc}>
+  <SectionRenderer sections={sections} />
+
+  {import.meta.env.DEV && (
+    <details style="margin: 40px auto; max-width: 800px; padding: 16px; background: #f5f5f5; border-radius: 8px;">
+      <summary><strong>Debug — raw WP payload</strong></summary>
+      <pre style="font-size: 11px; overflow: auto;">{JSON.stringify(lp, null, 2)}</pre>
+    </details>
+  )}
+</BaseLayout>

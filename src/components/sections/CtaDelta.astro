@@ -1,0 +1,35 @@
+---
+/** CtaDelta — `cta_delta`. Image-aside variant in a contained panel. */
+import type { CtaDeltaSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: CtaDeltaSection; }
+const { data } = Astro.props;
+const bgRaw = data.cta_delta_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const containerRaw = data.cta_delta_container_background_colour;
+const containerBg = typeof containerRaw === 'string' ? containerRaw : (containerRaw as AcfColor | undefined)?.color;
+const img = data.cta_delta_image as WpImage | null | undefined;
+const imgUrl = img && typeof img === 'object' ? img.url : null;
+const buttons = data.cta_delta_cta_buttons ?? [];
+---
+<section class="section cta-delta" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    <div class="cta-delta__panel" style={containerBg ? `background: ${containerBg};` : undefined}>
+      {imgUrl && <img src={imgUrl} alt={(typeof img === 'object' && img?.alt) || ''} loading="lazy" class="cta-delta__image" />}
+      <div class="cta-delta__text">
+        {data.cta_delta_heading && <h2>{data.cta_delta_heading}</h2>}
+        {data.cta_delta_introduction && <p>{data.cta_delta_introduction}</p>}
+        {buttons.length > 0 && (
+          <div class="cta-delta__actions">
+            {buttons.map(b => <a href={b.cta_delta_button_url} class="btn btn--primary">{b.cta_delta_button_text}</a>)}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .cta-delta__panel { padding: 32px; border-radius: 16px; display: grid; gap: 32px; align-items: center; grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .cta-delta__panel { grid-template-columns: 1fr 1fr; } }
+  .cta-delta__image { width: 100%; height: auto; border-radius: 12px; }
+  .cta-delta__actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+</style>

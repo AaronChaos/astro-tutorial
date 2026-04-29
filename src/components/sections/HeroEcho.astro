@@ -1,0 +1,41 @@
+---
+/** HeroEcho — `hero_echo`. Two stacked images + text. */
+import type { HeroEchoSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: HeroEchoSection; }
+const { data } = Astro.props;
+const bgRaw = data.hero_echo_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const imgs = [data.hero_echo_image_one, data.hero_echo_image_two]
+  .map(i => (i && typeof i === 'object' ? (i as WpImage) : null))
+  .filter(Boolean) as WpImage[];
+const buttons = data.hero_echo_cta_buttons ?? [];
+---
+<section class="section hero-echo" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container hero-echo__grid">
+    <div class="hero-echo__images">
+      {imgs.map((img, i) => (
+        <img src={img.url} alt={img.alt ?? ''} loading={i === 0 ? 'eager' : 'lazy'} class={`hero-echo__img hero-echo__img--${i}`} />
+      ))}
+    </div>
+    <div class="hero-echo__text">
+      {data.hero_echo_heading && <h1>{data.hero_echo_heading}</h1>}
+      {data.hero_echo_introduction && <p>{data.hero_echo_introduction}</p>}
+      {buttons.length > 0 && (
+        <div class="hero-echo__actions">
+          {buttons.map(b => <a href={b.hero_echo_button_url} class="btn btn--primary">{b.hero_echo_button_text}</a>)}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+<style>
+  .hero-echo { padding: 80px 0; }
+  .hero-echo__grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 768px) { .hero-echo__grid { grid-template-columns: 1fr 1fr; } }
+  .hero-echo__text h1 { margin: 0 0 16px; font-size: clamp(2rem, 5vw, 3rem); }
+  .hero-echo__actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+  .hero-echo__images { position: relative; aspect-ratio: 4 / 3; }
+  .hero-echo__img { position: absolute; width: 60%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+  .hero-echo__img--0 { top: 0; left: 0; }
+  .hero-echo__img--1 { bottom: 0; right: 0; }
+</style>

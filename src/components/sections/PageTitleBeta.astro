@@ -1,0 +1,22 @@
+---
+/** PageTitleBeta — `page_title_beta`. Left-aligned variant. */
+import type { PageTitleBetaSection } from '../../lib/wp';
+interface Props { data: PageTitleBetaSection; }
+const { data } = Astro.props;
+---
+<section class="section page-title page-title-beta">
+  <div class="container">
+    {data.page_title_beta_heading && <h1>{data.page_title_beta_heading}</h1>}
+    {data.page_title_beta_breadcrumbs && (
+      <nav class="page-title__crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span>/</span> <span>{data.page_title_beta_heading}</span>
+      </nav>
+    )}
+  </div>
+</section>
+<style>
+  .page-title-beta { padding: 60px 0 24px; text-align: left; }
+  .page-title-beta h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.5rem); }
+  .page-title-beta .page-title__crumbs { margin-top: 12px; opacity: 0.75; font-size: 0.9rem; }
+  .page-title-beta .page-title__crumbs a { color: inherit; text-decoration: none; }
+</style>

@@ -1,0 +1,134 @@
+---
+/**
+ * SectionRenderer — maps an ACF Flexible Content `acf_fc_layout` value
+ * to its corresponding Astro component.
+ *
+ * To add a new section type:
+ *   1. Build the section in ACF (PhantomWP) under page_sections
+ *   2. Create src/components/sections/<NewSection>.astro
+ *   3. Add the mapping below
+ */
+import type { Section } from '../lib/wp';
+
+import HeroAlpha from './sections/HeroAlpha.astro';
+import HeroBeta from './sections/HeroBeta.astro';
+import HeroCharlie from './sections/HeroCharlie.astro';
+import HeroDelta from './sections/HeroDelta.astro';
+import HeroEcho from './sections/HeroEcho.astro';
+
+import PageTitleAlpha from './sections/PageTitleAlpha.astro';
+import PageTitleBeta from './sections/PageTitleBeta.astro';
+import PageTitleCharlie from './sections/PageTitleCharlie.astro';
+import PageTitleDelta from './sections/PageTitleDelta.astro';
+
+import ContentAlpha from './sections/ContentAlpha.astro';
+import ContentBeta from './sections/ContentBeta.astro';
+import ContentCharlie from './sections/ContentCharlie.astro';
+import ContentDelta from './sections/ContentDelta.astro';
+import ContentEcho from './sections/ContentEcho.astro';
+
+import CtaAlpha from './sections/CtaAlpha.astro';
+import CtaBeta from './sections/CtaBeta.astro';
+import CtaCharlie from './sections/CtaCharlie.astro';
+import CtaDelta from './sections/CtaDelta.astro';
+import CtaEcho from './sections/CtaEcho.astro';
+import CtaFoxtrot from './sections/CtaFoxtrot.astro';
+import CtaGolf from './sections/CtaGolf.astro';
+
+import FaqAlpha from './sections/FaqAlpha.astro';
+import FaqBeta from './sections/FaqBeta.astro';
+
+import FeatureAlpha from './sections/FeatureAlpha.astro';
+import FeatureBeta from './sections/FeatureBeta.astro';
+import FeatureCharlie from './sections/FeatureCharlie.astro';
+import FeatureDelta from './sections/FeatureDelta.astro';
+import FeatureEcho from './sections/FeatureEcho.astro';
+
+import ProcessAlpha from './sections/ProcessAlpha.astro';
+import ProcessBeta from './sections/ProcessBeta.astro';
+import ProcessCharlie from './sections/ProcessCharlie.astro';
+
+import BlogArchiveAlpha from './sections/BlogArchiveAlpha.astro';
+import BlogArchiveBeta from './sections/BlogArchiveBeta.astro';
+import BlogArchiveCharlie from './sections/BlogArchiveCharlie.astro';
+import BlogFeedAlpha from './sections/BlogFeedAlpha.astro';
+import BlogFeedBeta from './sections/BlogFeedBeta.astro';
+import BlogFeedCharlie from './sections/BlogFeedCharlie.astro';
+
+import MembersGrid from './sections/MembersGrid.astro';
+
+interface Props {
+  sections: Section[] | undefined;
+}
+
+const { sections = [] } = Astro.props;
+
+// Map of acf_fc_layout → component. New sections plug in here.
+const componentMap: Record<string, any> = {
+  // Hero family
+  hero_alpha: HeroAlpha,
+  hero_beta: HeroBeta,
+  hero_charlie: HeroCharlie,
+  hero_delta: HeroDelta,
+  hero_echo: HeroEcho,
+  // Page Title family
+  page_title_alpha: PageTitleAlpha,
+  page_title_beta: PageTitleBeta,
+  page_title_charlie: PageTitleCharlie,
+  page_title_delta: PageTitleDelta,
+  // Content family
+  content_alpha: ContentAlpha,
+  content_beta: ContentBeta,
+  content_charlie: ContentCharlie,
+  content_delta: ContentDelta,
+  content_echo: ContentEcho,
+  // CTA family
+  cta_alpha: CtaAlpha,
+  cta_beta: CtaBeta,
+  cta_charlie: CtaCharlie,
+  cta_delta: CtaDelta,
+  cta_echo: CtaEcho,
+  cta_foxtrot: CtaFoxtrot,
+  cta_golf: CtaGolf,
+  // FAQ family
+  faq_alpha: FaqAlpha,
+  faq_beta: FaqBeta,
+  // Feature family
+  feature_alpha: FeatureAlpha,
+  feature_beta: FeatureBeta,
+  feature_charlie: FeatureCharlie,
+  feature_delta: FeatureDelta,
+  feature_echo: FeatureEcho,
+  // Process family
+  process_alpha: ProcessAlpha,
+  process_beta: ProcessBeta,
+  process_charlie: ProcessCharlie,
+  // Blog family
+  blog_archive_alpha: BlogArchiveAlpha,
+  blog_archive_beta: BlogArchiveBeta,
+  blog_archive_charlie: BlogArchiveCharlie,
+  blog_feed_alpha: BlogFeedAlpha,
+  blog_feed_beta: BlogFeedBeta,
+  blog_feed_charlie: BlogFeedCharlie,
+  // Members
+  members_grid: MembersGrid,
+};
+---
+{sections.map(section => {
+  const Component = componentMap[section.acf_fc_layout];
+  if (!Component) {
+    // Unknown layout — render a clearly visible warning in dev, nothing in prod.
+    if (import.meta.env.DEV) {
+      return (
+        <div style="background: #fee; border: 2px dashed #c00; padding: 12px; margin: 12px 0;">
+          <strong>Unknown section type:</strong> <code>{section.acf_fc_layout}</code>
+          <details style="margin-top: 8px;"><summary>Raw data</summary>
+            <pre style="font-size: 11px; overflow: auto;">{JSON.stringify(section, null, 2)}</pre>
+          </details>
+        </div>
+      );
+    }
+    return null;
+  }
+  return <Component data={section} />;
+})}

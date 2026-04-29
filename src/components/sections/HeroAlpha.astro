@@ -1,0 +1,55 @@
+---
+/**
+ * HeroAlpha — mirrors the `hero_alpha` ACF flexible content layout in PhantomWP.
+ *
+ * Field map (from WP):
+ *   hero_alpha_background_image  → WpImage | null   (resolved via resolveSectionImages)
+ *   hero_alpha_heading           → string
+ *   hero_alpha_introduction      → string
+ *   hero_alpha_show_cta_section  → boolean
+ *   hero_alpha_cta_heading       → string
+ *   hero_alpha_cta_introduction  → string
+ *   hero_alpha_cta_buttons       → AcfButton[]
+ */
+import type { HeroAlphaSection, WpImage } from '../../lib/wp';
+
+interface Props {
+  data: HeroAlphaSection;
+}
+
+const { data } = Astro.props;
+
+const bg = data.hero_alpha_background_image as WpImage | null | undefined;
+const bgUrl = bg && typeof bg === 'object' ? bg.url : null;
+const showCta = !!data.hero_alpha_show_cta_section;
+const buttons = data.hero_alpha_cta_buttons ?? [];
+---
+<section
+  class="hero hero--image"
+  style={bgUrl
+    ? `background-image: linear-gradient(180deg, rgba(11,11,15,0.35), rgba(11,11,15,0.9)), url('${bgUrl}');`
+    : undefined}
+>
+  <div class="container">
+    <h1>{data.hero_alpha_heading}</h1>
+    {data.hero_alpha_introduction && (
+      <p class="hero__lead">{data.hero_alpha_introduction}</p>
+    )}
+
+    {showCta && (
+      <div class="hero__cta">
+        {data.hero_alpha_cta_heading && <h2 class="hero__cta-heading">{data.hero_alpha_cta_heading}</h2>}
+        {data.hero_alpha_cta_introduction && <p>{data.hero_alpha_cta_introduction}</p>}
+        {buttons.length > 0 && (
+          <div class="hero__actions">
+            {buttons.map(b => (
+              <a href={b.hero_alpha_button_url} class="btn btn--primary">
+                {b.hero_alpha_cta_button_text}
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+</section>

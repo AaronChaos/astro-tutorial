@@ -1,0 +1,50 @@
+---
+/** FeatureCharlie — `feature_charlie`. Header (heading/content/button) + sub-blocks. */
+import type { FeatureCharlieSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: FeatureCharlieSection; }
+const { data } = Astro.props;
+const bgRaw = data.feature_charlie_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const containerRaw = data.feature_charlie_container_background_colour;
+const containerBg = typeof containerRaw === 'string' ? containerRaw : (containerRaw as AcfColor | undefined)?.color;
+const blocks = data.feature_charlie_block ?? [];
+---
+<section class="section feature-charlie" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    <div class="feature-charlie__panel" style={containerBg ? `background: ${containerBg};` : undefined}>
+      <header class="feature-charlie__head">
+        {data.feature_charlie_heading && <h2>{data.feature_charlie_heading}</h2>}
+        {data.feature_charlie_main_content && <p>{data.feature_charlie_main_content}</p>}
+        {data.feature_charlie_button_text && data.feature_charlie_button_url && (
+          <a href={data.feature_charlie_button_url} class="btn btn--primary">{data.feature_charlie_button_text}</a>
+        )}
+      </header>
+      {blocks.length > 0 && (
+        <div class="feature-charlie__grid">
+          {blocks.map(b => {
+            const img = b.feature_charlie_block_image as WpImage | null | undefined;
+            const imgUrl = img && typeof img === 'object' ? img.url : null;
+            return (
+              <article class="feature-charlie__card">
+                {imgUrl && <img src={imgUrl} alt={(typeof img === 'object' && img?.alt) || ''} loading="lazy" />}
+                {b.feature_charlie_block_heading && <h3>{b.feature_charlie_block_heading}</h3>}
+                {b.feature_charlie_block_main_content && <p>{b.feature_charlie_block_main_content}</p>}
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+<style>
+  .feature-charlie__panel { padding: 32px; border-radius: 16px; }
+  .feature-charlie__head { text-align: center; max-width: 640px; margin: 0 auto 32px; }
+  .feature-charlie__head .btn { margin-top: 16px; }
+  .feature-charlie__grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .feature-charlie__grid { grid-template-columns: repeat(3, 1fr); } }
+  .feature-charlie__card { background: rgba(255,255,255,0.04); padding: 20px; border-radius: 12px; }
+  .feature-charlie__card img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 8px; margin-bottom: 12px; }
+  .feature-charlie__card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+  .feature-charlie__card p { margin: 0; opacity: 0.85; line-height: 1.5; }
+</style>

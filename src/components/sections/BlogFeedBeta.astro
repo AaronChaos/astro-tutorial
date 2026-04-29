@@ -1,0 +1,37 @@
+---
+/** BlogFeedBeta — `blog_feed_beta`. Latest posts, image-left horizontal cards. */
+import { wp } from '../../lib/wp';
+import type { BlogFeedBetaSection, AcfColor } from '../../lib/wp';
+interface Props { data: BlogFeedBetaSection; }
+const { data } = Astro.props;
+const bgRaw = data.blog_feed_beta_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const cardRaw = data.blog_feed_beta_card_background_colour;
+const cardBg = typeof cardRaw === 'string' ? cardRaw : (cardRaw as AcfColor | undefined)?.color;
+const posts = await wp.getPosts({ limit: 4 });
+---
+<section class="section blog-feed-beta" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    {data.blog_feed_beta_heading && <h2>{data.blog_feed_beta_heading}</h2>}
+    {data.blog_feed_beta_introduction && <p class="blog-feed-beta__intro">{data.blog_feed_beta_introduction}</p>}
+    <div class="blog-feed-beta__list">
+      {posts.map(p => (
+        <a class="blog-feed-beta__card" href={`/blog/${p.slug}`} style={cardBg ? `background: ${cardBg};` : undefined}>
+          {p.featured_image && <img src={p.featured_image.url} alt={p.featured_image.alt} loading="lazy" />}
+          <div class="blog-feed-beta__body">
+            <h3 set:html={p.title.rendered} />
+            <time datetime={p.date}>{new Date(p.date).toLocaleDateString('en-GB')}</time>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .blog-feed-beta__intro { opacity: 0.85; max-width: 640px; margin-bottom: 24px; }
+  .blog-feed-beta__list { display: grid; gap: 12px; }
+  .blog-feed-beta__card { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: center; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.04); color: inherit; text-decoration: none; }
+  .blog-feed-beta__card img { width: 120px; height: 80px; object-fit: cover; border-radius: 8px; }
+  .blog-feed-beta__card h3 { margin: 0 0 4px; font-size: 1rem; }
+  .blog-feed-beta__card time { opacity: 0.6; font-size: 0.85rem; }
+</style>

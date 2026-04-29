@@ -1,0 +1,40 @@
+---
+/** HeroCharlie — `hero_charlie`. Three-image collage + text panel. */
+import type { HeroCharlieSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: HeroCharlieSection; }
+const { data } = Astro.props;
+const bgRaw = data.hero_charlie_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const imgs = [data.hero_charlie_image_one, data.hero_charlie_image_two, data.hero_charlie_image_three]
+  .map(i => (i && typeof i === 'object' ? (i as WpImage) : null))
+  .filter(Boolean) as WpImage[];
+const buttons = data.hero_charlie_cta_buttons ?? [];
+---
+<section class="section hero-charlie" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container hero-charlie__grid">
+    <div class="hero-charlie__text">
+      {data.hero_charlie_heading && <h1>{data.hero_charlie_heading}</h1>}
+      {data.hero_charlie_introduction && <p>{data.hero_charlie_introduction}</p>}
+      {buttons.length > 0 && (
+        <div class="hero-charlie__actions">
+          {buttons.map(b => <a href={b.hero_charlie_button_url} class="btn btn--primary">{b.hero_charlie_button_text}</a>)}
+        </div>
+      )}
+    </div>
+    <div class="hero-charlie__images">
+      {imgs.map((img, i) => (
+        <img src={img.url} alt={img.alt ?? ''} loading={i === 0 ? 'eager' : 'lazy'} class={`hero-charlie__img hero-charlie__img--${i}`} />
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .hero-charlie { padding: 80px 0; }
+  .hero-charlie__grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 768px) { .hero-charlie__grid { grid-template-columns: 1fr 1fr; } }
+  .hero-charlie__text h1 { margin: 0 0 16px; font-size: clamp(2rem, 5vw, 3rem); }
+  .hero-charlie__actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+  .hero-charlie__images { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; aspect-ratio: 4 / 3; }
+  .hero-charlie__img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+  .hero-charlie__img--0 { grid-row: 1 / span 2; }
+</style>

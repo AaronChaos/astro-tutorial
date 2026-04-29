@@ -1,0 +1,44 @@
+---
+/** FeatureBeta — `feature_beta`. Same shape as alpha; horizontal-card variant. */
+import type { FeatureBetaSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: FeatureBetaSection; }
+const { data } = Astro.props;
+const bgRaw = data.feature_beta_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const containerRaw = data.feature_beta_container_background_colour;
+const containerBg = typeof containerRaw === 'string' ? containerRaw : (containerRaw as AcfColor | undefined)?.color;
+const blocks = data.feature_beta_block ?? [];
+---
+<section class="section feature-beta" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    <div class="feature-beta__panel" style={containerBg ? `background: ${containerBg};` : undefined}>
+      <div class="feature-beta__list">
+        {blocks.map(b => {
+          const img = b.feature_beta_image as WpImage | null | undefined;
+          const imgUrl = img && typeof img === 'object' ? img.url : null;
+          return (
+            <article class="feature-beta__row">
+              {imgUrl && <img src={imgUrl} alt={(typeof img === 'object' && img?.alt) || ''} loading="lazy" class="feature-beta__img" />}
+              <div class="feature-beta__body">
+                {b.feature_beta_heading && <h3>{b.feature_beta_heading}</h3>}
+                {b.feature_beta_main_content && <p>{b.feature_beta_main_content}</p>}
+                {b.feature_beta_button_text && b.feature_beta_button_url && (
+                  <a href={b.feature_beta_button_url} class="feature-beta__link">{b.feature_beta_button_text} →</a>
+                )}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .feature-beta__panel { padding: 32px; border-radius: 16px; }
+  .feature-beta__list { display: grid; gap: 16px; }
+  .feature-beta__row { display: grid; gap: 16px; grid-template-columns: 80px 1fr; align-items: center; padding: 16px; background: rgba(255,255,255,0.04); border-radius: 12px; }
+  .feature-beta__img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+  .feature-beta__body h3 { margin: 0 0 4px; font-size: 1.05rem; }
+  .feature-beta__body p { margin: 0; opacity: 0.85; line-height: 1.5; }
+  .feature-beta__link { display: inline-block; margin-top: 8px; text-decoration: none; font-weight: 600; }
+</style>

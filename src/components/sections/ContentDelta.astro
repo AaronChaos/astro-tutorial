@@ -1,0 +1,38 @@
+---
+/** ContentDelta — `content_delta`. Two-image stacked + heading + content + CTAs. */
+import type { ContentDeltaSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: ContentDeltaSection; }
+const { data } = Astro.props;
+const bgRaw = data.content_delta_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const img1 = data.content_delta_image as WpImage | null | undefined;
+const img2 = data.content_delta_image_two as WpImage | null | undefined;
+const url1 = img1 && typeof img1 === 'object' ? img1.url : null;
+const url2 = img2 && typeof img2 === 'object' ? img2.url : null;
+const buttons = data.content_delta_cta_buttons ?? [];
+---
+<section class="section content-delta" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container content-delta__grid">
+    <div class="content-delta__images">
+      {url1 && <img src={url1} alt={(typeof img1 === 'object' && img1?.alt) || ''} class="content-delta__img content-delta__img--1" loading="lazy" />}
+      {url2 && <img src={url2} alt={(typeof img2 === 'object' && img2?.alt) || ''} class="content-delta__img content-delta__img--2" loading="lazy" />}
+    </div>
+    <div class="content-delta__text">
+      {data.content_delta_heading && <h2>{data.content_delta_heading}</h2>}
+      {data.content_delta_main_content && <p class="content-delta__body">{data.content_delta_main_content}</p>}
+      {buttons.length > 0 && (
+        <div class="content-delta__actions">
+          {buttons.map(b => <a href={b.content_delta_button_url} class="btn btn--primary">{b.content_delta_button_text}</a>)}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+<style>
+  .content-delta__grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 768px) { .content-delta__grid { grid-template-columns: 1fr 1fr; } }
+  .content-delta__images { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .content-delta__img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; }
+  .content-delta__body { line-height: 1.7; }
+  .content-delta__actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+</style>

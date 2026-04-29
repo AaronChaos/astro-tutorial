@@ -1,0 +1,23 @@
+---
+/** PageTitleAlpha — `page_title_alpha`. Centred H1 + optional breadcrumb stub. */
+import type { PageTitleAlphaSection } from '../../lib/wp';
+interface Props { data: PageTitleAlphaSection; }
+const { data } = Astro.props;
+---
+<section class="section page-title page-title-alpha">
+  <div class="container">
+    {data.page_title_alpha_heading && <h1>{data.page_title_alpha_heading}</h1>}
+    {data.page_title_alpha_breadcrumbs && (
+      <nav class="page-title__crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a> <span>/</span> <span>{data.page_title_alpha_heading}</span>
+      </nav>
+    )}
+  </div>
+</section>
+<style>
+  .page-title { padding: 60px 0 24px; text-align: center; }
+  .page-title h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.5rem); }
+  .page-title__crumbs { margin-top: 12px; opacity: 0.75; font-size: 0.9rem; }
+  .page-title__crumbs a { color: inherit; text-decoration: none; }
+  .page-title__crumbs a:hover { text-decoration: underline; }
+</style>

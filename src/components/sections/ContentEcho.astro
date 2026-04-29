@@ -1,0 +1,38 @@
+---
+/** ContentEcho — `content_echo`. Two-image side-by-side, text below. */
+import type { ContentEchoSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: ContentEchoSection; }
+const { data } = Astro.props;
+const bgRaw = data.content_echo_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const img1 = data.content_echo_image as WpImage | null | undefined;
+const img2 = data.content_echo_image_two as WpImage | null | undefined;
+const url1 = img1 && typeof img1 === 'object' ? img1.url : null;
+const url2 = img2 && typeof img2 === 'object' ? img2.url : null;
+const buttons = data.content_echo_cta_buttons ?? [];
+---
+<section class="section content-echo" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    <div class="content-echo__images">
+      {url1 && <img src={url1} alt={(typeof img1 === 'object' && img1?.alt) || ''} loading="lazy" />}
+      {url2 && <img src={url2} alt={(typeof img2 === 'object' && img2?.alt) || ''} loading="lazy" />}
+    </div>
+    <div class="content-echo__text">
+      {data.content_echo_heading && <h2>{data.content_echo_heading}</h2>}
+      {data.content_echo_main_content && <p class="content-echo__body">{data.content_echo_main_content}</p>}
+      {buttons.length > 0 && (
+        <div class="content-echo__actions">
+          {buttons.map(b => <a href={b.content_echo_button_url} class="btn btn--primary">{b.content_echo_button_text}</a>)}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+<style>
+  .content-echo__images { display: grid; gap: 12px; grid-template-columns: 1fr; margin-bottom: 24px; }
+  @media (min-width: 768px) { .content-echo__images { grid-template-columns: 1fr 1fr; } }
+  .content-echo__images img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; }
+  .content-echo__text { max-width: 720px; }
+  .content-echo__body { line-height: 1.7; }
+  .content-echo__actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+</style>

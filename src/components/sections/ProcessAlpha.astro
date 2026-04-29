@@ -1,0 +1,63 @@
+---
+/** ProcessAlpha — `process_alpha` ACF layout. Numbered "how it works" steps. */
+import type { ProcessAlphaSection, AcfColor } from '../../lib/wp';
+interface Props { data: ProcessAlphaSection; }
+const { data } = Astro.props;
+
+const bgRaw = data.process_alpha_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const steps = data.process_alpha_steps ?? [];
+---
+<section class="section process-alpha" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    {data.process_alpha_heading && <h2>{data.process_alpha_heading}</h2>}
+    {data.process_alpha_introduction && <p class="process-alpha__intro">{data.process_alpha_introduction}</p>}
+
+    {steps.length > 0 && (
+      <ol class="process-alpha__steps" data-count={steps.length}>
+        {steps.map((s, i) => (
+          <li class="process-alpha__step">
+            <div class="process-alpha__num">{i + 1}</div>
+            <div class="process-alpha__body">
+              {s.process_alpha_steps_subheading && <h3>{s.process_alpha_steps_subheading}</h3>}
+              {s.process_alpha_steps_content && <p>{s.process_alpha_steps_content}</p>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    )}
+  </div>
+</section>
+
+<style>
+  .process-alpha__intro { opacity: 0.85; max-width: 600px; margin-bottom: 32px; }
+  .process-alpha__steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 24px;
+  }
+  @media (min-width: 768px) {
+    .process-alpha__steps[data-count="3"] { grid-template-columns: repeat(3, 1fr); }
+    .process-alpha__steps[data-count="4"] { grid-template-columns: repeat(2, 1fr); }
+  }
+  .process-alpha__step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .process-alpha__num {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+  .process-alpha__body h3 { margin: 0 0 6px; font-size: 1.05rem; }
+  .process-alpha__body p { margin: 0; opacity: 0.85; line-height: 1.6; }
+</style>

@@ -1,0 +1,36 @@
+---
+/** ProcessBeta — `process_beta`. Vertical timeline of steps. */
+import type { ProcessBetaSection, AcfColor } from '../../lib/wp';
+interface Props { data: ProcessBetaSection; }
+const { data } = Astro.props;
+const bgRaw = data.process_beta_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const steps = data.process_beta_steps ?? [];
+---
+<section class="section process-beta" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    {data.process_beta_heading && <h2>{data.process_beta_heading}</h2>}
+    {data.process_beta_introduction && <p class="process-beta__intro">{data.process_beta_introduction}</p>}
+    {steps.length > 0 && (
+      <ol class="process-beta__steps">
+        {steps.map((s, i) => (
+          <li class="process-beta__step">
+            <div class="process-beta__num">{i + 1}</div>
+            <div class="process-beta__body">
+              {s.process_beta_steps_subheading && <h3>{s.process_beta_steps_subheading}</h3>}
+              {s.process_beta_steps_content && <p>{s.process_beta_steps_content}</p>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    )}
+  </div>
+</section>
+<style>
+  .process-beta__intro { opacity: 0.85; max-width: 600px; margin-bottom: 32px; }
+  .process-beta__steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 24px; max-width: 720px; }
+  .process-beta__step { display: flex; gap: 20px; align-items: flex-start; padding-left: 12px; border-left: 2px solid rgba(255,255,255,0.1); }
+  .process-beta__num { flex-shrink: 0; width: 40px; height: 40px; border-radius: 8px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .process-beta__body h3 { margin: 0 0 6px; font-size: 1.1rem; }
+  .process-beta__body p { margin: 0; opacity: 0.85; line-height: 1.6; }
+</style>

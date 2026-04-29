@@ -1,0 +1,42 @@
+---
+/** ContentCharlie — `content_charlie`. Image + heading + repeating feature list with optional counters. */
+import type { ContentCharlieSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: ContentCharlieSection; }
+const { data } = Astro.props;
+const bgRaw = data.content_charlie_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const containerRaw = data.content_charlie_container_background_colour;
+const containerBg = typeof containerRaw === 'string' ? containerRaw : (containerRaw as AcfColor | undefined)?.color;
+const img = data.content_charlie_image as WpImage | null | undefined;
+const imgUrl = img && typeof img === 'object' ? img.url : null;
+const features = data.content_charlie_features ?? [];
+---
+<section class="section content-charlie" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container content-charlie__panel" style={containerBg ? `background: ${containerBg};` : undefined}>
+    <div class="content-charlie__grid">
+      {imgUrl && <img src={imgUrl} alt={(typeof img === 'object' && img?.alt) || ''} loading="lazy" class="content-charlie__image" />}
+      <div class="content-charlie__text">
+        {data.content_charlie_heading && <h2>{data.content_charlie_heading}</h2>}
+        {data.content_charlie_introduction && <p class="content-charlie__intro">{data.content_charlie_introduction}</p>}
+        <ul class="content-charlie__features">
+          {features.map(f => (
+            <li class="content-charlie__feature">
+              {f.content_charlie_feature_subtitle && <strong>{f.content_charlie_feature_subtitle}</strong>}
+              {f.content_charlie_feature_content && <p>{f.content_charlie_feature_content}</p>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .content-charlie__panel { padding: 32px; border-radius: 16px; }
+  .content-charlie__grid { display: grid; gap: 32px; grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 768px) { .content-charlie__grid { grid-template-columns: 1fr 1fr; } }
+  .content-charlie__image { width: 100%; height: auto; border-radius: 12px; }
+  .content-charlie__intro { opacity: 0.85; margin-bottom: 16px; }
+  .content-charlie__features { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  .content-charlie__feature strong { display: block; margin-bottom: 4px; }
+  .content-charlie__feature p { margin: 0; opacity: 0.85; line-height: 1.5; }
+</style>

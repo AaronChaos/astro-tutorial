@@ -1,0 +1,50 @@
+---
+/** FaqBeta — `faq_beta`. Same as alpha but in a contained panel. JSON-LD schema for SEO. */
+import type { FaqBetaSection, AcfColor } from '../../lib/wp';
+interface Props { data: FaqBetaSection; }
+const { data } = Astro.props;
+const bgRaw = data.faq_beta_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const containerRaw = data.faq_beta_container_background_colour;
+const containerBg = typeof containerRaw === 'string' ? containerRaw : (containerRaw as AcfColor | undefined)?.color;
+const items = data.faq_beta_qanda ?? [];
+const faqSchema = items.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map(i => ({
+    '@type': 'Question',
+    name: i.faq_beta_faq_question,
+    acceptedAnswer: { '@type': 'Answer', text: i.faq_beta_faq_answer },
+  })),
+} : null;
+---
+<section class="section faq-beta" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container">
+    <div class="faq-beta__panel" style={containerBg ? `background: ${containerBg};` : undefined}>
+      {data.faq_beta_heading && <h2>{data.faq_beta_heading}</h2>}
+      {data.faq_beta_introduction && <p class="faq-beta__intro">{data.faq_beta_introduction}</p>}
+      {items.length > 0 && (
+        <div class="faq-beta__list">
+          {items.map(i => (
+            <details class="faq-beta__item">
+              <summary>{i.faq_beta_faq_question}</summary>
+              <p>{i.faq_beta_faq_answer}</p>
+            </details>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+  {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+</section>
+<style>
+  .faq-beta__panel { padding: 32px; border-radius: 16px; max-width: 760px; margin: 0 auto; }
+  .faq-beta__intro { opacity: 0.85; margin-bottom: 24px; }
+  .faq-beta__list { margin-top: 16px; }
+  .faq-beta__item { padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .faq-beta__item summary { cursor: pointer; font-weight: 600; list-style: none; }
+  .faq-beta__item summary::-webkit-details-marker { display: none; }
+  .faq-beta__item summary::after { content: ' +'; opacity: 0.5; }
+  .faq-beta__item[open] summary::after { content: ' −'; }
+  .faq-beta__item p { margin: 12px 0 0; opacity: 0.85; line-height: 1.6; }
+</style>

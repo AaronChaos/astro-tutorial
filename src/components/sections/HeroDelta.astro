@@ -1,0 +1,42 @@
+---
+/** HeroDelta — `hero_delta`. Nine-image marquee/wall + headline. */
+import type { HeroDeltaSection, WpImage, AcfColor } from '../../lib/wp';
+interface Props { data: HeroDeltaSection; }
+const { data } = Astro.props;
+const bgRaw = data.hero_delta_background_colour;
+const bg = typeof bgRaw === 'string' ? bgRaw : (bgRaw as AcfColor | undefined)?.color;
+const imgs = [
+  data.hero_delta_image_one, data.hero_delta_image_two, data.hero_delta_image_three,
+  data.hero_delta_image_four, data.hero_delta_image_five, data.hero_delta_image_six,
+  data.hero_delta_image_seven, data.hero_delta_image_eight, data.hero_delta_image_nine,
+].map(i => (i && typeof i === 'object' ? (i as WpImage) : null)).filter(Boolean) as WpImage[];
+const buttons = data.hero_delta_cta_buttons ?? [];
+---
+<section class="section hero-delta" style={bg ? `background: ${bg};` : undefined}>
+  <div class="container hero-delta__inner">
+    {data.hero_delta_heading && <h1>{data.hero_delta_heading}</h1>}
+    {data.hero_delta_introduction && <p class="hero-delta__lead">{data.hero_delta_introduction}</p>}
+    {buttons.length > 0 && (
+      <div class="hero-delta__actions">
+        {buttons.map(b => <a href={b.hero_delta_button_url} class="btn btn--primary">{b.hero_delta_button_text}</a>)}
+      </div>
+    )}
+  </div>
+  {imgs.length > 0 && (
+    <div class="hero-delta__wall">
+      {imgs.map((img, i) => (
+        <img src={img.url} alt={img.alt ?? ''} loading={i < 3 ? 'eager' : 'lazy'} />
+      ))}
+    </div>
+  )}
+</section>
+<style>
+  .hero-delta { padding: 60px 0 0; text-align: center; }
+  .hero-delta__inner { max-width: 720px; margin: 0 auto; padding-bottom: 40px; }
+  .hero-delta h1 { margin: 0 0 12px; font-size: clamp(2rem, 5vw, 3rem); }
+  .hero-delta__lead { opacity: 0.85; }
+  .hero-delta__actions { display: flex; gap: 12px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+  .hero-delta__wall { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  @media (min-width: 768px) { .hero-delta__wall { grid-template-columns: repeat(9, 1fr); } }
+  .hero-delta__wall img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
+</style>
